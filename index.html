@@ -1,18 +1,18 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RUMMO: gestão estratégica</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* VOICE: produto real, direto, calmo
    IDEA: a porta de entrada da RUMMO: escolhe a organização e cai no seu espaço, com as fases como uma trilha
    PICTURE: a trilha de fases, com o ponto coral na fase atual
-   COLOUR and TYPE: azul RUMMO #0E359D dominante, branco, coral #FF606A como destino; Anton só na logo; Plus Jakarta Sans em tudo, com escala clara de tamanhos e pesos
+   COLOUR and TYPE: azul RUMMO #0E359D dominante, branco, coral var(--dot,#D9F301) como destino; Anton só na logo; Montserrat em tudo, com escala clara de tamanhos e pesos
    LAYOUT: entrada em azul cheio; espaço da organização com trilha no topo e cartões de fase */
-:root{color-scheme:light dark;--azul:#0E359D;--azul-e:#0A2775;--coral:#FF606A;--bg:light-dark(#F4F6FC,#0B1330);--card:light-dark(#fff,#121C42);--ink:light-dark(#0B1B44,#EEF1FA);--cinza:light-dark(#5B6685,#A9B3D1);--linha:light-dark(#DCE2F0,#26325E);--azul-c:light-dark(#E7ECF8,#1A2756)}
+:root{color-scheme:light dark;--azul:#381A56;--azul-e:#2A1240;--coral:#D9F301;--acct:light-dark(#6B3FA0,#D9F301);--dot:#D9F301;--bg:light-dark(#FAF7F3,#150B20);--card:light-dark(#fff,#21132F);--ink:light-dark(#1F1230,#F3EEFA);--cinza:light-dark(#6B5F78,#B6A9C6);--linha:light-dark(#E8E0D6,#3A2A4C);--azul-c:light-dark(#EFE7F7,#2A1A3B)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Plus Jakarta Sans",system-ui,sans-serif;overflow-x:clip}
-h1,h2,h3{font-family:"Plus Jakarta Sans",system-ui,sans-serif;text-wrap:balance;margin:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Montserrat,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Montserrat,system-ui,sans-serif;text-wrap:balance;margin:0}
 h1{font-size:clamp(34px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.025em}h2{font-size:clamp(28px,3.4vw,42px);font-weight:800;line-height:1.1;letter-spacing:-.02em}h3{font-weight:700;letter-spacing:-.01em}
-.eyebrow{display:inline-block;font-size:14px;font-weight:700;color:var(--coral);margin-bottom:12px}
+.eyebrow{display:inline-block;font-size:14px;font-weight:700;color:var(--acct);margin-bottom:12px}
 body{font-weight:400}
 .band{padding:clamp(28px,4vw,64px) max(5vw,16px)}.in{max-width:1180px;margin:0 auto}
 .top{background:var(--azul-e);color:#fff;padding:12px max(5vw,16px);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -23,11 +23,11 @@ button,.btn{font-family:inherit}
 .entrar .in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,70px);align-items:center}
 .entrar .lock{width:min(100%,460px);display:block;margin-bottom:18px}
 .entrar p.sub{font-size:19px;opacity:.9;max-width:34ch;margin:10px 0 0}
-.box{background:var(--card);color:var(--ink);border-radius:26px;padding:26px;box-shadow:0 30px 60px rgba(4,16,60,.4)}
+.box{background:var(--card);color:var(--ink);border-radius:26px;padding:26px;box-shadow:0 30px 60px rgba(30,10,50,.4)}
 .box h3{margin:0 0 4px;font-size:20px}.box .cap{color:var(--cinza);font-size:14px;margin:0 0 16px}
 .org{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--azul-c);color:var(--ink);border:2px solid transparent;border-radius:18px;padding:14px 16px;margin-top:10px;cursor:pointer;min-height:64px;font-size:16px}
-.org:hover,.org:focus-visible{border-color:var(--coral);outline:none}
-.av{width:44px;height:44px;border-radius:14px;flex:none;display:grid;place-items:center;font:800 17px "Plus Jakarta Sans",system-ui,sans-serif;color:#fff;background:var(--azul)}
+.org:hover,.org:focus-visible{border-color:var(--acct);outline:none}
+.av{width:44px;height:44px;border-radius:14px;flex:none;display:grid;place-items:center;font:800 17px Montserrat,system-ui,sans-serif;color:#fff;background:var(--azul)}
 .org b{display:block}.org small{color:var(--cinza)}
 .nota{font-size:13px;color:var(--cinza);margin-top:16px;border-top:1px solid var(--linha);padding-top:12px}
 .trilha{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:26px 0 8px;position:relative}
@@ -35,29 +35,29 @@ button,.btn{font-family:inherit}
 .tp{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;position:relative;font-size:13px;font-weight:700;color:var(--cinza)}
 .tp i{width:34px;height:34px;border-radius:50%;background:var(--card);border:3px solid var(--linha);display:block}
 .tp.on i{background:var(--azul);border-color:var(--azul)}.tp.on{color:var(--ink)}
-.tp.agora i{background:var(--coral);border-color:var(--coral);box-shadow:0 0 0 6px color-mix(in srgb,var(--coral) 25%,transparent)}
+.tp.agora i{background:var(--coral);border-color:var(--acct);box-shadow:0 0 0 6px color-mix(in srgb,var(--coral) 25%,transparent)}
 @media (prefers-reduced-motion:no-preference){.tp.agora i{animation:pulsa 1.8s ease-in-out infinite}}
 @keyframes pulsa{50%{box-shadow:0 0 0 12px color-mix(in srgb,var(--coral) 0%,transparent)}}
 .fases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px;margin-top:24px}
 .fase{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px}
-.fase .n{font:700 13px "Plus Jakarta Sans",system-ui,sans-serif;color:var(--cinza)}
+.fase .n{font:700 13px Montserrat,system-ui,sans-serif;color:var(--cinza)}
 .fase h3{margin:0;font-size:20px}.fase p{margin:0;color:var(--cinza);font-size:15px}
 .fase ul{margin:0;padding-left:18px;font-size:15px}
 .pill{align-self:flex-start;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--azul-c);color:var(--azul)}
-:root[data-theme=dark] .pill{color:#C9D4FF}
-.pill.ok{background:var(--azul);color:#fff}.pill.vem{background:color-mix(in srgb,var(--coral) 18%,transparent);color:light-dark(#A3242E,#FFB3B8)}
+:root[data-theme=dark] .pill{color:#D9F301}
+.pill.ok{background:var(--azul);color:#fff}.pill.vem{background:var(--coral);color:#381A56}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:14px;font-weight:800;text-decoration:none;border:0;cursor:pointer;font-size:15px}
-.btn.p{background:var(--coral);color:#0B1B44}.btn.s{background:var(--azul-c);color:var(--azul)}
-:root[data-theme=dark] .btn.s{color:#C9D4FF}
+.btn.p{background:var(--coral);color:#381A56}.btn.s{background:var(--azul-c);color:var(--azul)}
+:root[data-theme=dark] .btn.s{color:#D9F301}
 .fase .acts{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;padding-top:6px}
-.fase.destaque{border:2px solid var(--coral)}
+.fase.destaque{border:2px solid var(--azul)}
 .cab{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .cab .av{width:64px;height:64px;border-radius:20px;font-size:30px}
 .cab p{margin:4px 0 0;color:var(--cinza)}
 .aviso{margin-top:26px;background:var(--azul-c);border-radius:18px;padding:16px 18px;font-size:14px}
 .tabs{display:flex;gap:6px;margin-top:22px;border-bottom:1px solid var(--linha);flex-wrap:wrap}
 .tabs a{padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;font-weight:700;color:var(--cinza);text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-1px}
-.tabs a[aria-current]{color:var(--ink);border-color:var(--coral)}
+.tabs a[aria-current]{color:var(--ink);border-color:var(--acct)}
 .dash{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;margin-top:22px}
 .bl{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:22px}
 .bl h3{margin:0 0 4px;font-size:18px}.bl .cap{color:var(--cinza);font-size:14px;margin:0 0 14px}
@@ -77,7 +77,7 @@ button,.btn{font-family:inherit}
 .ac .d{white-space:nowrap;font-weight:700;font-size:13px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
 .kpi{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:16px}
-.kpi b{display:block;font:800 clamp(26px,3vw,34px)/1 "Plus Jakarta Sans",system-ui,sans-serif;letter-spacing:-.02em;margin-bottom:6px}.kpi span{font-size:13px;color:var(--cinza)}
+.kpi b{display:block;font:800 clamp(26px,3vw,34px)/1 Montserrat,system-ui,sans-serif;letter-spacing:-.02em;margin-bottom:6px}.kpi span{font-size:13px;color:var(--cinza)}
 .ben{background:var(--azul);color:#fff;border:0}.ben .cap{color:rgba(255,255,255,.8)}.ben p{margin:0 0 12px}
 .vazio{border-style:dashed;background:transparent}.vazio p{color:var(--cinza);margin:0}
 .prox{background:var(--azul);color:#fff;border:0;display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:space-between}
@@ -87,14 +87,14 @@ button,.btn{font-family:inherit}
 .top nav{display:flex;gap:4px;flex-wrap:wrap}
 .top nav a{color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:8px 12px;border-radius:999px;min-height:40px;display:inline-flex;align-items:center;opacity:.9}
 .top nav a:hover{background:rgba(255,255,255,.12)}
-.top a.cta{background:var(--coral);color:#0B1B44;font-weight:800;padding:8px 18px;border-radius:999px;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
+.top a.cta{background:var(--coral);color:#381A56;font-weight:800;padding:8px 18px;border-radius:999px;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
 .hero{background:var(--azul);color:#fff}
 .hero .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,5vw,64px);align-items:center;min-height:min(640px,calc(100vh - 64px))}
 .hero .lock{width:min(100%,400px);display:block;margin-bottom:18px}
 .hero p.sub{font-size:19px;opacity:.92;max-width:36ch;margin:14px 0 24px}
 .hero .bts{display:flex;gap:12px;flex-wrap:wrap}
 .btn.w{background:rgba(255,255,255,.14);color:#fff}
-.mock{background:var(--card);color:var(--ink);border-radius:24px;padding:20px;box-shadow:0 34px 70px rgba(4,16,60,.45);transform:rotate(-1.5deg)}
+.mock{background:var(--card);color:var(--ink);border-radius:24px;padding:20px;box-shadow:0 34px 70px rgba(30,10,50,.45);transform:rotate(-1.5deg)}
 .mock .mt{padding:9px 0}.mock h3{margin:0 0 8px;font-size:16px}
 .mock .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .mock .row span{font-size:12px;color:var(--cinza)}
@@ -104,20 +104,20 @@ button,.btn{font-family:inherit}
 .it b{display:block;font-size:18px;margin-bottom:6px}.it p{margin:0;color:var(--cinza)}
 .passos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:f}
 .passo{background:var(--card);border:1px solid var(--linha);border-radius:20px;padding:18px;position:relative}
-.passo:before{counter-increment:f;content:counter(f);font:800 15px "Plus Jakarta Sans",system-ui,sans-serif;color:var(--coral);width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--coral) 15%,transparent);display:grid!important;place-items:center;display:block;margin-bottom:6px}
+.passo:before{counter-increment:f;content:counter(f);font:800 15px Montserrat,system-ui,sans-serif;color:var(--acct);width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--coral) 15%,transparent);display:grid!important;place-items:center;display:block;margin-bottom:6px}
 .passo b{display:block;margin-bottom:4px}.passo p{margin:0;font-size:14px;color:var(--cinza)}
 .alt{background:var(--azul-c)}
 .benb{background:var(--azul-e);color:#fff}.benb .lead{color:rgba(255,255,255,.85)}
 .benb .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,60px);align-items:center}
 .chat{display:grid;gap:10px}.msg{padding:14px 16px;border-radius:18px;max-width:92%;font-size:15px}
 .msg.u{background:rgba(255,255,255,.14);justify-self:end;border-bottom-right-radius:6px}
-.msg.b{background:#fff;color:#0B1B44;border-bottom-left-radius:6px}.msg.b small{display:block;font-weight:800;color:var(--azul);margin-bottom:4px}
+.msg.b{background:#fff;color:#381A56;border-bottom-left-radius:6px}.msg.b small{display:block;font-weight:800;color:var(--azul);margin-bottom:4px}
 .planos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .plano{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px}
-.plano.rec{border:2px solid var(--coral)}
-.plano h3{margin:0;font-size:20px}.plano .pr{font:800 clamp(26px,2.6vw,32px)/1.05 "Plus Jakarta Sans",system-ui,sans-serif;letter-spacing:-.02em;color:var(--azul)}
-:root[data-theme=dark] .plano .pr{color:#C9D4FF}
-.plano .pr small{font:600 13px "Plus Jakarta Sans",sans-serif;color:var(--cinza);display:block;margin-top:4px}
+.plano.rec{border:2px solid var(--azul)}
+.plano h3{margin:0;font-size:20px}.plano .pr{font:800 clamp(26px,2.6vw,32px)/1.05 Montserrat,system-ui,sans-serif;letter-spacing:-.02em;color:var(--azul)}
+:root[data-theme=dark] .plano .pr{color:#D9F301}
+.plano .pr small{font:600 13px Montserrat,sans-serif;color:var(--cinza);display:block;margin-top:4px}
 .plano ul{margin:0;padding-left:18px;font-size:15px;flex:1}.plano .btn{width:100%}
 .faq details{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:14px 18px;margin-bottom:10px}
 .faq summary{font-weight:700;cursor:pointer;min-height:28px}.faq p{margin:10px 0 0;color:var(--cinza)}
@@ -128,7 +128,7 @@ footer.rod svg{width:120px}footer.rod p{margin:0;opacity:.8;font-size:14px}
 .login .box{width:min(100%,440px)}
 .login label{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
 .login input{width:100%;font:16px inherit;font-family:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:48px}
-.login input:focus{outline:3px solid var(--coral);outline-offset:1px}
+.login input:focus{outline:3px solid var(--acct);outline-offset:1px}
 .login .btn{width:100%;margin-top:18px}
 .login .lk{display:flex;justify-content:space-between;font-size:14px;margin-top:12px;color:var(--cinza)}
 .orglogo{height:44px;width:auto;display:block}
@@ -151,14 +151,14 @@ footer.rod svg{width:120px}footer.rod p{margin:0;opacity:.8;font-size:14px}
 .grupo h3{font-size:21px;margin-bottom:4px}.grupo>p{color:var(--cinza);margin:0 0 16px;font-size:15px}
 .grupo ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .grupo li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:15px}
-.grupo li:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--coral);margin-top:7px}
+.grupo li:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--acct);margin-top:7px}
 .grupo li b{display:block;font-weight:700}.grupo li span{color:var(--cinza)}
 .feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(20px,3vw,36px) 0}
 .feat+.feat{border-top:1px solid var(--linha)}
 .feat.inv .tx{order:2}
 .feat h3{font-size:clamp(22px,2.4vw,28px);margin-bottom:10px}.feat .tx p{color:var(--cinza);font-size:17px;margin:0 0 14px}
 .feat ul{margin:0;padding-left:18px;color:var(--ink)}
-.ui{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:20px;box-shadow:0 20px 44px rgba(14,53,157,.12)}
+.ui{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:20px;box-shadow:0 20px 44px rgba(56,26,86,.10)}
 .ui .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:700}
 .ui .hd span{font-size:12px;color:var(--cinza);font-weight:600}
 .tg{display:inline-flex;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800;background:var(--azul-c)}
@@ -185,22 +185,22 @@ footer.rod .bx{max-width:1180px;margin:26px auto 0;border-top:1px solid rgba(255
 .card .t{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
 .card .t b{font-size:16px}.card .meta{color:var(--cinza);font-size:14px;margin-top:4px}
 .card details{margin-top:10px}.card summary{cursor:pointer;font-weight:700;color:var(--azul);font-size:14px;min-height:30px}
-:root[data-theme=dark] .card summary{color:#C9D4FF}
+:root[data-theme=dark] .card summary{color:#D9F301}
 .fm{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;margin-top:10px;align-items:end}
 .fm label{display:grid;gap:4px;font-size:13px;font-weight:700}
-.fm input,.fm select,.fm textarea{font:16px "Plus Jakarta Sans",sans-serif;padding:9px 11px;border-radius:10px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:44px;width:100%}
+.fm input,.fm select,.fm textarea{font:16px Montserrat,sans-serif;padding:9px 11px;border-radius:10px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:44px;width:100%}
 .fm .w2{grid-column:1/-1}
 .hist{margin:10px 0 0;padding:0;list-style:none;font-size:14px;color:var(--cinza)}
 .hist li{padding:6px 0;border-top:1px dashed var(--linha)}
 .orc{width:100%;border-collapse:collapse;font-size:15px}
 .orc th,.orc td{padding:8px;border-bottom:1px solid var(--linha);text-align:right}
 .orc th:first-child,.orc td:first-child{text-align:left}
-.orc input{width:120px;text-align:right;font:15px "Plus Jakarta Sans",sans-serif;padding:6px 8px;border-radius:8px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:40px}
+.orc input{width:120px;text-align:right;font:15px Montserrat,sans-serif;padding:6px 8px;border-radius:8px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:40px}
 .aviso2{background:color-mix(in srgb,var(--coral) 12%,transparent);border-radius:14px;padding:12px 14px;font-size:14px;margin-top:12px}
-a:focus-visible,button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offset:2px}
 @media(max-width:760px){.entrar .in{grid-template-columns:minmax(0,1fr)}.trilha .tp span{font-size:11px}}
 </style></head><body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="#FF606A"/></g></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="var(--dot,#D9F301)"/></g></symbol></defs></svg>
 <header class="top"><a href="#" aria-label="RUMMO, início"><svg viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg></a><nav id="sitenav" aria-label="Site"><a href="#plataforma">Plataforma</a><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a><a href="#rede">Para financiadores</a></nav><span class="sp"></span><span id="quem" style="font-size:14px;opacity:.85"></span><button id="sair" hidden>Trocar organização</button><a class="cta" id="btnentrar" href="#entrar" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)">Entrar</a></header>
 <main id="app"></main>
 <script>
@@ -227,7 +227,7 @@ const PB_LOGO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAACjCAYAAADFPmo
 ORGS['pensando-bem'].logo=PB_LOGO;ORGS['pensando-bem'].nome='Instituto Pensando Bem';
 const nav=document.getElementById('sitenav'),btnE=document.getElementById('btnentrar');
 function modo(m){nav.style.display=m==='site'?'':'none';btnE.hidden=m!=='site';if(m!=='app'){quem.textContent='';sair.hidden=true}}
-function marcaOrg(o,id,cls){return o.logo?`<span class="logobox"><img src="${o.logo}" alt="${esc(o.nome)}"></span>`:`<span class="av ${cls||''}"${id==='mare-alta'?' style="background:var(--coral)"':''}>${esc(o.sigla)}</span>`}
+function marcaOrg(o,id,cls){return o.logo?`<span class="logobox"><img src="${o.logo}" alt="${esc(o.nome)}"></span>`:`<span class="av ${cls||''}"${id==='mare-alta'?' style="background:#D2AE90"':''}>${esc(o.sigla)}</span>`}
 const FASES_SITE=[['Planejamento estratégico','Missão, visão e valores com o Ben, diagnóstico, papéis, metas e orçamento.'],['Plano tático','Cada meta vira ações com responsável, prazo e marcos do trimestre.'],['Acompanhamento de metas','Check-in mensal, semáforo e painel para a diretoria.'],['Rotinas da equipe','1:1 com pauta, reunião de resultados e resumo para o conselho.'],['Avaliação de desempenho','Opcional: ciclo ligado às metas e aos valores da organização.']];
 const PLANOS=[['Semente','Grátis','para começar',['Cadastro e identidade','Missão, visão e valores com o Ben','Documento simples do plano','Uso do Ben com limite'],'Começar grátis',''],
 ['Trilha','R$ 99 a 149','por mês, cobrado por ano',['Todas as fases do app','Painel de metas e plano tático','Equipe inteira trabalhando junto','Ben sem limite prático'],'Quero a Trilha','rec'],
@@ -236,7 +236,7 @@ const PLANOS=[['Semente','Grátis','para começar',['Cadastro e identidade','Mis
 function site(){
  modo('site');document.title='RUMMO: gestão estratégica para organizações sociais';
  const mk=(n,pc,st)=>`<div class="mt"><b>${n}</b><span class="v">${pc}%</span><div class="bar"><i style="width:${pc}%;background:${COR[st]}"></i></div><small><span class="sem ${SN[st][0]}">${SN[st][1]}</span></small></div>`;
- app.innerHTML=`<section class="band hero"><div class="in"><div><svg class="lock" viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg><span class="eyebrow" style="color:#FFB3B8">Planejamento, metas e equipe</span><h1>O sistema que leva organizações sociais aonde elas planejaram chegar.</h1><p class="sub">Planejamento estratégico, plano tático e acompanhamento de metas com toda a equipe, num lugar só e feito para o terceiro setor.</p><div class="ctas2"><a class="btn p" href="#comecar">Começar grátis</a><a class="lnk" href="#fases-site">Ver como funciona →</a></div></div>
+ app.innerHTML=`<section class="band hero"><div class="in"><div><svg class="lock" viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg><span class="eyebrow" style="color:#D9F301">Planejamento, metas e equipe</span><h1>O sistema que leva organizações sociais aonde elas planejaram chegar.</h1><p class="sub">Planejamento estratégico, plano tático e acompanhamento de metas com toda a equipe, num lugar só e feito para o terceiro setor.</p><div class="ctas2"><a class="btn p" href="#comecar">Começar grátis</a><a class="lnk" href="#fases-site">Ver como funciona →</a></div></div>
  <div class="mock" aria-label="Exemplo do painel"><div class="row"><h3>Metas do ano</h3><span>Exemplo</span></div>${mk('Jovens formados',70,'ok')}${mk('Famílias com renda nova',48,'at')}${mk('Receita própria',30,'fo')}${mk('Voluntários ativos',82,'ok')}</div></div></section>
  <div class="origem"><div class="in"><span>Método nascido e testado no planejamento 2027 do</span><img src="${PB_LOGO}" alt="Instituto Pensando Bem"><span>em Fortaleza.</span></div></div>
  <section class="band sec" id="plataforma"><div class="in"><span class="eyebrow">Plataforma</span><h2>Estratégia e execução no mesmo sistema</h2><p class="lead">Ferramentas de gestão de pessoas não fazem planejamento. Planilhas não acompanham ninguém. A RUMMO junta os dois: o plano nasce aqui e é acompanhado aqui, todo mês.</p>
@@ -247,7 +247,7 @@ function site(){
  <div class="feat"><div class="tx"><span class="eyebrow">Plano tático</span><h3>Da meta à ação da semana</h3><p>Cada meta se desdobra em ações com responsável, prazo e status. Quem atrasou aparece antes de virar problema.</p></div>
  <div class="ui"><div class="hd">Ações da semana <span>Exemplo</span></div>${[['Enviar proposta ao edital','Coordenação','fo','Atrasada'],['Relatório aos parceiros','Financeiro','at','30/11'],['Abrir turma de audiovisual','Pedagógico','ok','02/12']].map(([n,r,st,d])=>`<div class="ac"><div>${n}<small>${r}</small></div><span class="d ${SN[st][0]}">${d}</span></div>`).join('')}</div></div>
  <div class="feat inv"><div class="tx"><span class="eyebrow">Acompanhamento</span><h3>Check-in mensal em dois minutos</h3><p>O responsável atualiza o número, escolhe o semáforo e deixa um comentário. O painel da diretoria se atualiza sozinho.</p></div>
- <div class="ui"><div class="hd">Check-in · Receita própria <span>Novembro</span></div><div class="mt" style="border:0"><b>R$ 54 mil de R$ 180 mil</b><span class="v">30%</span><div class="bar"><i style="width:30%;background:var(--coral)"></i></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><span class="tg s-ok">No rumo</span><span class="tg s-at">Atenção</span><span class="tg s-fo" style="outline:2px solid currentColor">Fora do rumo</span></div></div></div>
+ <div class="ui"><div class="hd">Check-in · Receita própria <span>Novembro</span></div><div class="mt" style="border:0"><b>R$ 54 mil de R$ 180 mil</b><span class="v">30%</span><div class="bar"><i style="width:30%;background:#C0392B"></i></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><span class="tg s-ok">No rumo</span><span class="tg s-at">Atenção</span><span class="tg s-fo" style="outline:2px solid currentColor">Fora do rumo</span></div></div></div>
  <div class="feat"><div class="tx"><span class="eyebrow">Ben, o consultor de IA</span><h3>Um consultor que lê tudo e resume o mês</h3><p>O Ben sugere rascunhos, aponta contradições e escreve o resumo para o conselho. Ele facilita, quem decide são vocês.</p></div>
  <div class="chat ui" style="background:var(--azul-e);border:0"><div class="msg u" style="color:#fff">Como fechamos novembro?</div><div class="msg b"><small>Ben</small>Formação vai bem: 70% dos jovens previstos já concluíram. O ponto de atenção é a receita própria, em 30%. Sugiro levar duas ações de captação à reunião de resultados.</div></div></div>
  </div></section>
@@ -266,7 +266,7 @@ function site(){
 }
 function login(){
  modo('login');document.title='RUMMO: entrar';
- app.innerHTML=`<section class="login"><div class="box"><svg viewBox="0 0 316 100" style="width:120px;display:block;margin-bottom:14px;color:var(--azul)" aria-hidden="true"><use href="#pal"/></svg><h3>Entrar na RUMMO</h3><p class="cap">Acesse o espaço da sua organização.</p>
+ app.innerHTML=`<section class="login"><div class="box"><svg viewBox="0 0 316 100" style="width:120px;display:block;margin-bottom:14px;color:var(--azul);--dot:#6B3FA0" aria-hidden="true"><use href="#pal"/></svg><h3>Entrar na RUMMO</h3><p class="cap">Acesse o espaço da sua organização.</p>
  <form id="fl" novalidate><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" placeholder="voce@organizacao.org.br"><label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password"><button class="btn p" type="submit">Entrar</button><div class="lk"><span>Esqueci a senha</span><span>Criar conta</span></div></form>
  <div id="orgs" hidden><p class="nota" style="border:0;padding:0;margin-top:18px">Suas organizações:</p>${Object.entries(ORGS).map(([id,o])=>`<button class="org" data-id="${id}">${marcaOrg(o,id)}<span><b>${esc(o.nome)}</b><small>${esc(o.desc)}</small></span></button>`).join('')}</div>
  <p class="nota">Protótipo: qualquer e-mail e senha entram. O login real chega com o app.</p></div></section>`;
@@ -282,7 +282,7 @@ const PAINEL={
   reuniao:'Reunião de resultados: quarta, 3 de dezembro, 9h',
   ben:['Novembro foi bom na formação: 70% dos jovens previstos já concluíram os cursos e o voluntariado está perto da meta.','O ponto de atenção é a receita própria, em 30% do ano. Sugiro levar à reunião de resultados duas ações de captação para dezembro e rever a meta com o conselho.']}};
 const SN={ok:['s-ok','No rumo'],at:['s-at','Atenção'],fo:['s-fo','Fora do rumo']};
-const COR={ok:'var(--azul)',at:'#E39B2D',fo:'var(--coral)'};
+const COR={ok:'var(--azul)',at:'#E39B2D',fo:'#C0392B'};
 function faixa(o){return `<div class="faixa" aria-hidden="true">${o.fases.map((f,k)=>`<span class="${k===o.atual?'agora':f.st==='ok'?'on':''}"></span>`).join('')}</div>`}
 const KIMP=id=>'rummo_acomp_'+id;
 function lerImp(id){try{const t=localStorage.getItem(KIMP(id));return t?JSON.parse(t):null}catch(e){return null}}
@@ -326,7 +326,7 @@ function painel(id,o){
   <div class="bl vazio"><h3>Metas do ano</h3><p>Aparecem aqui com percentual e semáforo assim que o plano tático for criado.</p></div>
   <div class="bl vazio"><h3>Ações e check-ins</h3><p>Ações da semana, atrasadas e quem falta atualizar a meta.</p></div>
   <div class="bl vazio span2"><h3>Resumo do Ben</h3><p>Um parágrafo por mês sobre o andamento, pronto para o conselho.</p></div>
-  <div class="bl span2 imp"><h3>Importar o acompanhamento do planejamento</h3><p class="cap">No planejamento 2027, abra a aba de documentos e clique em "Enviar para a RUMMO". Depois escolha aqui o arquivo baixado (.json). Os dados ficam só neste navegador.</p><label class="btn s" for="fimp" style="cursor:pointer">Escolher arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--coral)"></p></div></div>`;
+  <div class="bl span2 imp"><h3>Importar o acompanhamento do planejamento</h3><p class="cap">No planejamento 2027, abra a aba de documentos e clique em "Enviar para a RUMMO". Depois escolha aqui o arquivo baixado (.json). Os dados ficam só neste navegador.</p><label class="btn s" for="fimp" style="cursor:pointer">Escolher arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--acct)"></p></div></div>`;
  }
  return `<div class="kpis">${d.kpis.map(([v,l])=>`<div class="kpi"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>
  <div class="dash">
@@ -350,8 +350,8 @@ const uid=p=>p+'_'+Math.random().toString(36).slice(2,9);
 function salvar(D){D.acompanhamentoGeradoEm=new Date().toISOString();try{localStorage.setItem(KIMP(CUR),JSON.stringify(D))}catch(e){alertaErro()}}
 function alertaErro(){const el=document.getElementById('err');if(el)el.textContent='Não consegui salvar neste navegador.'}
 function vazio(id){const o=ORGS[id];return {formato:'rummo.acompanhamento',versao:1,geradoEm:new Date().toISOString(),origem:'RUMMO',org:{id,nome:o.nome},ciclo:2027,prioridades:[],metas:[],acoes:[],rituais:[],radar:[],orcamento:{total:0,mensal:Array(12).fill(0),realizado:Array(12).fill(null)},documentos:[]}}
-function semDados(id){return `<div class="bl span2 imp" style="margin-top:22px"><h3>Comece o acompanhamento</h3><p class="cap">Traga o que o planejamento gerou ou comece em branco. Os dados ficam salvos neste navegador.</p><div class="tool" style="margin:0"><label class="btn p" for="fimp" style="cursor:pointer">Importar do planejamento (.json)</label><input id="fimp" type="file" accept=".json,application/json" hidden><button class="btn s" data-act="branco">Começar em branco</button></div><p class="cap" style="margin:12px 0 0">No planejamento 2027: aba de documentos, botão "Enviar para a RUMMO".</p><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--coral)"></p></div>`}
-function barraFerr(){return `<div class="tool"><button class="btn s sm" data-act="exportar">Exportar (.json)</button><label class="btn s sm" for="fimp" style="cursor:pointer">Importar outro arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><span class="sp"></span><button class="btn lk sm" data-act="zerar">Zerar acompanhamento</button><button class="btn lk sm" data-act="limpar">Apagar tudo</button></div><p id="err" class="cap" style="color:var(--coral);margin:0"></p>`}
+function semDados(id){return `<div class="bl span2 imp" style="margin-top:22px"><h3>Comece o acompanhamento</h3><p class="cap">Traga o que o planejamento gerou ou comece em branco. Os dados ficam salvos neste navegador.</p><div class="tool" style="margin:0"><label class="btn p" for="fimp" style="cursor:pointer">Importar do planejamento (.json)</label><input id="fimp" type="file" accept=".json,application/json" hidden><button class="btn s" data-act="branco">Começar em branco</button></div><p class="cap" style="margin:12px 0 0">No planejamento 2027: aba de documentos, botão "Enviar para a RUMMO".</p><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--acct)"></p></div>`}
+function barraFerr(){return `<div class="tool"><button class="btn s sm" data-act="exportar">Exportar (.json)</button><label class="btn s sm" for="fimp" style="cursor:pointer">Importar outro arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><span class="sp"></span><button class="btn lk sm" data-act="zerar">Zerar acompanhamento</button><button class="btn lk sm" data-act="limpar">Apagar tudo</button></div><p id="err" class="cap" style="color:var(--acct);margin:0"></p>`}
 function abaMetas(D){
  const g={};D.metas.forEach((m,i)=>{(g[m.perspectiva||'Sem perspectiva']=g[m.perspectiva||'Sem perspectiva']||[]).push([m,i])});
  const ult=m=>m.checkins&&m.checkins.length?m.checkins[m.checkins.length-1]:null;
