@@ -68,6 +68,8 @@ button,.btn{font-family:inherit}
 .mt:first-of-type{border-top:0}
 .mt b{font-size:15px}.mt .v{font-weight:800;white-space:nowrap;text-align:right}
 .mt .bar{grid-column:1/-1;height:10px;border-radius:6px;background:var(--azul-c);overflow:hidden}.mt .bar i{display:block;height:100%;border-radius:6px}
+.graf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}.graf .bl{min-width:0}.graf h3{margin:0}.stk{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--azul-c);margin-top:14px}.stk i{display:block;height:100%}.leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--cinza);margin-top:12px}.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}.hb{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:14px;margin-top:12px}.hb .bar{grid-column:1/-1;height:8px;border-radius:6px;background:var(--azul-c);overflow:hidden}.hb .bar i{display:block;height:100%;border-radius:6px}.hb b{font-weight:600}.cols{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;align-items:end;height:130px;margin-top:16px;border-bottom:1px solid var(--linha)}.cols div{display:flex;gap:2px;align-items:end;height:100%}.cols span{flex:1;border-radius:3px 3px 0 0;min-height:2px}.mes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;font-size:11px;color:var(--cinza);text-align:center;margin-top:6px}.big{font-size:34px;font-weight:800;line-height:1.1;margin-top:12px;display:block}
+@media (max-width:760px){.graf{grid-template-columns:minmax(0,1fr)}}
 .mt small{color:var(--cinza);grid-column:1/-1;font-size:13px}
 .sem{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;white-space:nowrap}
 .sem:before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
@@ -199,7 +201,7 @@ footer.rod .bx{max-width:1180px;margin:26px auto 0;border-top:1px solid rgba(255
 .aviso2{background:color-mix(in srgb,var(--coral) 12%,transparent);border-radius:14px;padding:12px 14px;font-size:14px;margin-top:12px}
 a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offset:2px}
 @media(max-width:760px){.entrar .in{grid-template-columns:minmax(0,1fr)}.trilha .tp span{font-size:11px}}
-</style></head><body>
+</style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#381A56"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RUMMO"></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="var(--dot,#D9F301)"/></g></symbol></defs></svg>
 <header class="top"><a href="#" aria-label="RUMMO, início"><svg viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg></a><nav id="sitenav" aria-label="Site"><a href="#plataforma">Plataforma</a><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a><a href="#rede">Para financiadores</a></nav><span class="sp"></span><span id="quem" style="font-size:14px;opacity:.85"></span><button id="sair" hidden>Trocar organização</button><a class="cta" id="btnentrar" href="#entrar" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)">Entrar</a></header>
 <main id="app"></main>
@@ -285,7 +287,8 @@ const SN={ok:['s-ok','No rumo'],at:['s-at','Atenção'],fo:['s-fo','Fora do rumo
 const COR={ok:'var(--azul)',at:'#E39B2D',fo:'#C0392B'};
 function faixa(o){return `<div class="faixa" aria-hidden="true">${o.fases.map((f,k)=>`<span class="${k===o.atual?'agora':f.st==='ok'?'on':''}"></span>`).join('')}</div>`}
 const KIMP=id=>'rummo_acomp_'+id;
-function lerImp(id){try{const t=localStorage.getItem(KIMP(id));return t?JSON.parse(t):null}catch(e){return null}}
+const BASE={};
+function lerImp(id){try{const t=localStorage.getItem(KIMP(id));if(t)return JSON.parse(t)}catch(e){}return BASE[id]?JSON.parse(JSON.stringify(BASE[id])):null}
 const STI={no_rumo:['s-ok','No rumo'],atencao:['s-at','Atenção'],fora_do_rumo:['s-fo','Fora do rumo'],concluida:['s-ok','Concluída'],nao_iniciada:['','Não iniciada']};
 const stp=st=>{const x=STI[st]||['',String(st||'Sem status')];return `<span class="sem ${x[0]}" style="${x[0]?'':'color:var(--cinza)'}">${esc(x[1])}</span>`};
 const brl=n=>typeof n==='number'?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}):'';
@@ -301,7 +304,25 @@ function painelImp(id,o,D){
  const persp={};metas.forEach(m=>{(persp[m.perspectiva||'Outras']=persp[m.perspectiva||'Outras']||[]).push(m)});
  const pc=m=>{const c=ult(m);if(c&&typeof c.valor==='number'&&typeof m.metaNum==='number'&&m.metaNum!==0){const b=typeof m.baseNum==='number'?m.baseNum:0;return Math.max(0,Math.min(100,Math.round((c.valor-b)/(m.metaNum-b)*100)))}return null};
  const orc=D.orcamento||{};
- return `<div class="kpis"><div class="kpi"><b>${noRumo} de ${metas.length}</b><span>metas no rumo</span></div><div class="kpi"><b>${abertas.length}</b><span>ações abertas</span></div><div class="kpi"><b>${atras.length}</b><span>${atras.length===1?'ação atrasada':'ações atrasadas'}</span></div><div class="kpi"><b>${prox?dbr(prox.proximaData).slice(0,5):'—'}</b><span>${prox?esc(prox.nome):'próximo ritual'}</span></div></div>
+ const SC={nao_iniciada:'#CFC3DD',no_rumo:COR.ok,atencao:COR.at,fora_do_rumo:COR.fo,concluida:'#7FA800'};
+ const cnt={};metas.forEach(m=>{const s=stM(m)||'nao_iniciada';cnt[s]=(cnt[s]||0)+1});
+ const stk=(c,tot)=>`<div class="stk">${STO.filter(([k])=>c[k]).map(([k])=>`<i style="width:${c[k]/tot*100}%;background:${SC[k]}"></i>`).join('')}</div><div class="leg">${STO.filter(([k])=>c[k]).map(([k,l])=>`<span><i style="background:${SC[k]}"></i>${l}: ${c[k]}</span>`).join('')}</div>`;
+ const ca={};acoes.forEach(a=>{const s=a.status||'nao_iniciada';ca[s]=(ca[s]||0)+1});
+ const per=[...new Set(metas.flatMap(m=>(m.checkins||[]).map(c=>c.periodo)))].sort();
+ const pAt=per[per.length-1]||`${D.ciclo||2027}-01`,comCk=metas.filter(m=>(m.checkins||[]).some(c=>c.periodo===pAt)).length;
+ const mesN=p=>MESES[+p.slice(5,7)-1]+'/'+p.slice(0,4);
+ const pl=Array.isArray(orc.mensal)?orc.mensal:[],re=Array.isArray(orc.realizado)?orc.realizado:[];
+ const mx=Math.max(1,...pl.map(v=>v||0),...re.map(v=>v||0)),temOrc=pl.some(v=>v>0)||re.some(v=>typeof v==='number');
+ const graf=`<div class="graf">
+ <div class="bl"><h3>Status das metas</h3><p class="cap" style="margin:4px 0 0">${metas.length} metas${per.length?'':'. Tudo começa como "não iniciada" até o primeiro check-in'}</p>${metas.length?stk(cnt,metas.length):''}</div>
+ <div class="bl"><h3>Check-ins de ${mesN(pAt)}</h3><p class="cap" style="margin:4px 0 0">Metas atualizadas no mês</p><span class="big">${comCk} de ${metas.length}</span><div class="bar" style="margin-top:12px"><i style="width:${metas.length?comCk/metas.length*100:0}%;background:var(--azul)"></i></div></div>
+ <div class="bl"><h3>Metas por perspectiva</h3><p class="cap" style="margin:4px 0 0">No rumo ou concluídas, do total</p>${Object.entries(persp).map(([pp,ms])=>{const ok=ms.filter(m=>['no_rumo','concluida'].includes(stM(m))).length;return `<div class="hb"><b>${esc(pp)}</b><span>${ok}/${ms.length}</span><div class="bar"><i style="width:${ok/ms.length*100}%;background:var(--azul)"></i></div></div>`}).join('')}</div>
+ <div class="bl"><h3>Plano tático</h3><p class="cap" style="margin:4px 0 0">${acoes.length} ações · ${atras.length} atrasada${atras.length===1?'':'s'}</p>${acoes.length?stk(ca,acoes.length):''}</div>
+ <div class="bl span2"><h3>Orçamento ${esc(D.ciclo||'')}: planejado e realizado</h3>${temOrc?`<div class="cols">${MESES.map((_,k)=>`<div><span style="height:${(pl[k]||0)/mx*100}%;background:var(--azul-c);border:1px solid var(--linha)" title="Planejado ${brl(pl[k]||0)}"></span><span style="height:${(re[k]||0)/mx*100}%;background:var(--azul)" title="Realizado ${brl(re[k]||0)}"></span></div>`).join('')}</div><div class="mes">${MESES.map(m=>`<span>${m}</span>`).join('')}</div><div class="leg"><span><i style="background:var(--azul-c);border:1px solid var(--linha)"></i>Planejado</span><span><i style="background:var(--azul)"></i>Realizado</span></div>`:`<p class="cap" style="margin:8px 0 0">Lance o planejado de cada mês na aba <a href="#${id}-orcamento" style="color:inherit;font-weight:700">Orçamento</a> e o gráfico aparece aqui.</p>`}</div>
+ </div>`;
+ const avisoEx=D.exemplo?`<div class="bl" style="margin-top:22px;background:var(--azul-c);border-color:transparent;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><h3 style="margin:0">Você está vendo um exemplo preenchido</h3><p class="cap" style="margin:4px 0 0">Metas, ações e rituais são do planejamento 2027. Os check-ins de janeiro a março e o orçamento são fictícios, só para mostrar o fluxo.</p></div><button class="btn p sm" data-act="zerar">Zerar e começar de verdade</button></div>`:'';
+ return `${avisoEx}<div class="kpis"><div class="kpi"><b>${noRumo} de ${metas.length}</b><span>metas no rumo</span></div><div class="kpi"><b>${abertas.length}</b><span>ações abertas</span></div><div class="kpi"><b>${atras.length}</b><span>${atras.length===1?'ação atrasada':'ações atrasadas'}</span></div><div class="kpi"><b>${prox?dbr(prox.proximaData).slice(0,5):'—'}</b><span>${prox?esc(prox.nome):'próximo ritual'}</span></div></div>
+ ${graf}
  <div class="dash">
  ${pri.length?`<div class="bl span2"><h3>Prioridades ${esc(D.ciclo||'')}</h3><p class="cap">O que a organização decidiu fazer primeiro</p>${pri.map(x=>`<div class="ac"><div><b>${esc(x.curto||x.titulo)}</b><small>${esc(x.titulo)} · ${esc(x.perspectiva||'')}</small></div></div>`).join('')}</div>`:''}
  <div class="bl"><h3>Metas do ano</h3><p class="cap">${metas.length} metas por perspectiva. O percentual aparece após o primeiro check-in.</p>${Object.entries(persp).map(([pp,ms])=>`<p class="cap" style="margin:16px 0 0;font-weight:700;color:var(--ink)">${esc(pp)}</p>${ms.map(m=>{const v=pc(m);return `<div class="mt"><b>${esc(m.indicador||m.titulo)}</b><span class="v">${v===null?'':v+'%'}</span>${v===null?'':`<div class="bar"><i style="width:${v}%;background:${({atencao:COR.at,fora_do_rumo:COR.fo})[stM(m)]||COR.ok}"></i></div>`}<small>${[m.meta,m.responsavel].filter(Boolean).map(esc).join(' · ')}${m.meta||m.responsavel?' · ':''}${stp(stM(m))}${ult(m)?`<br>Último check-in (${esc(ult(m).periodo||'')}): ${esc(ult(m).valor??'')}${ult(m).comentario?' · '+esc(ult(m).comentario):''}`:''}</small></div>`}).join('')}`).join('')}</div>
@@ -310,7 +331,7 @@ function painelImp(id,o,D){
  <div class="bl"><h3>Rituais</h3><p class="cap">Rotinas de acompanhamento</p>${rit.map(r=>`<div class="ac"><div>${esc(r.nome)}<small>${esc(r.quando||'')}${r.duracao?' · '+esc(r.duracao):''}</small></div><span class="d">${dbr(r.proximaData)}</span></div>`).join('')}</div>
  ${orc.total?`<div class="bl"><h3>Orçamento ${esc(D.ciclo||'')}</h3><p class="cap">Total planejado</p><div class="kpi" style="border:0;padding:0"><b>${brl(orc.total)}</b>${orc.receitaPrevista&&orc.receitaPrevista.base?`<span>Receita prevista (cenário base): ${brl(orc.receitaPrevista.base)}</span>`:''}</div>${(()=>{const r=Array.isArray(orc.realizado)?orc.realizado:[],pl=Array.isArray(orc.mensal)?orc.mensal:[];const ks=r.map((v,k)=>typeof v==='number'?k:-1).filter(k=>k>=0);if(!ks.length)return '';const R=ks.reduce((a,k)=>a+r[k],0),P=ks.reduce((a,k)=>a+(pl[k]||0),0),dv=P?Math.round((R-P)/P*100):0;return `<div class="ac" style="margin-top:12px"><div>Realizado em ${ks.length} ${ks.length===1?'mês':'meses'}<small>Planejado no período: ${brl(P)}</small></div><span class="d ${Math.abs(dv)>10?'s-fo':'s-ok'}">${brl(R)} (${dv>0?'+':''}${dv}%)</span></div>`})()}</div>`:''}
  </div>
- <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:6px 0 10px"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar realizado</a></div><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os dados ficam só neste navegador. <button class="btn s" id="limpimp" style="min-height:36px;padding:6px 12px;margin-left:8px">Apagar dados deste navegador</button></p></div>
+ <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:6px 0 10px"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar realizado</a></div><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os check-ins ficam salvos neste navegador.</p></div>
  </div>`;
 }
 document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=CUR||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');try{localStorage.setItem(KIMP(id),t)}catch(x){}window.__imp=D;rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
@@ -378,7 +399,7 @@ function abaRituais(D){
 function abaOrc(D){
  const o=D.orcamento=D.orcamento||{};o.mensal=Array.isArray(o.mensal)?o.mensal:Array(12).fill(0);o.realizado=Array.isArray(o.realizado)?o.realizado:Array(12).fill(null);
  let ap=0,ar=0;
- return barraFerr()+`<p class="cap">Lance a despesa realizada de cada mês. O desvio aparece no painel.</p><div class="card scroll"><form data-form="orc"><table class="orc"><thead><tr><th>Mês</th><th>Planejado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody>${MESES.map((m,k)=>{const p=o.mensal[k]||0,r=o.realizado[k];if(typeof r==='number'){ap+=p;ar+=r}const dv=typeof r==='number'&&p?Math.round((r-p)/p*100):null;return `<tr><td>${m}</td><td>${brl(p)}</td><td><input name="r${k}" inputmode="decimal" value="${r??''}" aria-label="Realizado ${m}"></td><td class="${dv===null?'':Math.abs(dv)>10?'s-fo':'s-ok'}">${dv===null?'':(dv>0?'+':'')+dv+'%'}</td></tr>`}).join('')}</tbody><tfoot><tr><th>Total</th><th>${brl(o.mensal.reduce((a,b)=>a+(b||0),0))}</th><th>${brl(ar)}</th><th>${ap?((ar-ap)/ap*100>0?'+':'')+Math.round((ar-ap)/ap*100)+'%':''}</th></tr></tfoot></table><button class="btn p sm" style="margin-top:12px">Salvar realizado</button></form></div>`;
+ return barraFerr()+`<p class="cap">Lance o planejado e o realizado de cada mês. O gráfico e o desvio aparecem no painel.</p><div class="card scroll"><form data-form="orc"><table class="orc"><thead><tr><th>Mês</th><th>Planejado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody>${MESES.map((m,k)=>{const p=o.mensal[k]||0,r=o.realizado[k];if(typeof r==='number'){ap+=p;ar+=r}const dv=typeof r==='number'&&p?Math.round((r-p)/p*100):null;return `<tr><td>${m}</td><td><input name="p${k}" inputmode="decimal" value="${p||''}" aria-label="Planejado ${m}"></td><td><input name="r${k}" inputmode="decimal" value="${r??''}" aria-label="Realizado ${m}"></td><td class="${dv===null?'':Math.abs(dv)>10?'s-fo':'s-ok'}">${dv===null?'':(dv>0?'+':'')+dv+'%'}</td></tr>`}).join('')}</tbody><tfoot><tr><th>Total</th><th>${brl(o.mensal.reduce((a,b)=>a+(b||0),0))}</th><th>${brl(ar)}</th><th>${ap?((ar-ap)/ap*100>0?'+':'')+Math.round((ar-ap)/ap*100)+'%':''}</th></tr></tfoot></table><button class="btn p sm" style="margin-top:12px">Salvar orçamento</button></form></div>`;
 }
 function espaco(id,aba){
  modo('app');CUR=id;const o=ORGS[id];quem.textContent=o.nome;sair.hidden=false;document.title='RUMMO: '+o.nome;
@@ -403,7 +424,7 @@ document.addEventListener('submit',e=>{
  if(k==='novaacao')D.acoes.push({id:uid('ac'),acao:v.acao.trim(),responsavel:v.responsavel.trim(),dataLimite:v.dataLimite,status:'nao_iniciada'});
  if(k==='registro'){const r=D.rituais[i];r.registros=r.registros||[];if(v.texto.trim())r.registros.push({data:v.data,texto:v.texto.trim(),autor:v.autor.trim()});if(v.proxima)r.proximaData=v.proxima}
  if(k==='novorit')D.rituais.push({id:uid('rit'),nome:v.nome.trim(),quando:v.quando.trim(),proximaData:v.proximaData,registros:[]});
- if(k==='orc'){D.orcamento.realizado=MESES.map((_,j)=>num(v['r'+j]))}
+ if(k==='orc'){D.orcamento.realizado=MESES.map((_,j)=>num(v['r'+j]));D.orcamento.mensal=MESES.map((_,j)=>num(v['p'+j])||0);D.orcamento.total=D.orcamento.mensal.reduce((a,b)=>a+b,0)}
  salvar(D);const y=scrollY;rota();scrollTo(0,y);
 });
 document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.auto)e.target.form.requestSubmit()});
@@ -411,8 +432,8 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('[data-act]');if(!b||!CUR)return;const act=b.dataset.act,i=+b.dataset.i;let D=lerImp(CUR);
  if(act==='branco'){salvar(vazio(CUR));rota();return}
  if(act==='exportar'&&D){const bl=new Blob([JSON.stringify(D,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=`rummo-${CUR}-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();return}
- if(act==='zerar'&&D){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para zerar check-ins, status, registros e realizado';return}D.metas.forEach(m=>{m.checkins=[];m.status='nao_iniciada'});D.acoes.forEach(a=>a.status='nao_iniciada');D.rituais.forEach(r=>r.registros=[]);if(D.orcamento)D.orcamento.realizado=Array(12).fill(null);salvar(D);rota();return}
- if(act==='limpar'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para apagar tudo deste navegador';return}try{localStorage.removeItem(KIMP(CUR))}catch(x){}location.hash=CUR;rota();return}
+ if(act==='zerar'&&D){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para zerar check-ins, status, registros e realizado';return}D.metas.forEach(m=>{m.checkins=[];m.status='nao_iniciada'});D.acoes.forEach(a=>a.status='nao_iniciada');D.rituais.forEach(r=>r.registros=[]);if(D.orcamento){D.orcamento.realizado=Array(12).fill(null);if(D.exemplo){D.orcamento.mensal=Array(12).fill(0);D.orcamento.total=0}}delete D.exemplo;salvar(D);rota();return}
+ if(act==='limpar'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para apagar tudo deste navegador';return}salvar(vazio(CUR));location.hash=CUR;rota();return}
  if(!D)return;
  if(act==='delmeta'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para excluir';return}D.metas.splice(i,1)}
  if(act==='delacao'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para excluir';return}D.acoes.splice(i,1)}
@@ -422,5 +443,6 @@ const SECS=['plataforma','funcionalidades','fases-site','planos','rede','comecar
 function rota(){const h=location.hash.slice(1);if(SECS.includes(h)){if(!document.getElementById(h))site();document.getElementById(h).scrollIntoView();return}if(h==='entrar')return login(),scrollTo(0,0);let b=h,aba='';for(const [k] of ABAS){if(k&&h.endsWith('-'+k)){b=h.slice(0,-(k.length+1));aba=k}}ORGS[b]?espaco(b,aba):site();scrollTo(0,0)}
 sair.onclick=()=>{location.hash='entrar'};
 addEventListener('hashchange',rota);rota();
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
 </script></body></html>
