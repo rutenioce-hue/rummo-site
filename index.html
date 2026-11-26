@@ -175,6 +175,28 @@ footer.rod h4{margin:0 0 10px;font-size:14px}footer.rod a{color:#fff;opacity:.8;
 footer.rod .bx{max-width:1180px;margin:26px auto 0;border-top:1px solid rgba(255,255,255,.15);padding-top:16px;font-size:13px;opacity:.7}
 @media(max-width:900px){.grupos{grid-template-columns:minmax(0,1fr)}footer.rod .cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.feat,.final .in{grid-template-columns:minmax(0,1fr)}.feat.inv .tx{order:0}}
+.tabs{overflow-x:auto;flex-wrap:nowrap}.tabs a{flex:none}
+.tool{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 6px}
+.tool .sp{flex:1}
+.btn.sm{min-height:38px;padding:6px 14px;font-size:14px;border-radius:12px}
+.btn.lk{background:transparent;color:var(--cinza);text-decoration:underline}
+.grp{margin-top:24px}.grp>h3{font-size:16px;color:var(--cinza);margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:16px 18px;margin-bottom:10px}
+.card .t{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.card .t b{font-size:16px}.card .meta{color:var(--cinza);font-size:14px;margin-top:4px}
+.card details{margin-top:10px}.card summary{cursor:pointer;font-weight:700;color:var(--azul);font-size:14px;min-height:30px}
+:root[data-theme=dark] .card summary{color:#C9D4FF}
+.fm{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;margin-top:10px;align-items:end}
+.fm label{display:grid;gap:4px;font-size:13px;font-weight:700}
+.fm input,.fm select,.fm textarea{font:16px "Plus Jakarta Sans",sans-serif;padding:9px 11px;border-radius:10px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:44px;width:100%}
+.fm .w2{grid-column:1/-1}
+.hist{margin:10px 0 0;padding:0;list-style:none;font-size:14px;color:var(--cinza)}
+.hist li{padding:6px 0;border-top:1px dashed var(--linha)}
+.orc{width:100%;border-collapse:collapse;font-size:15px}
+.orc th,.orc td{padding:8px;border-bottom:1px solid var(--linha);text-align:right}
+.orc th:first-child,.orc td:first-child{text-align:left}
+.orc input{width:120px;text-align:right;font:15px "Plus Jakarta Sans",sans-serif;padding:6px 8px;border-radius:8px;border:1.5px solid var(--linha);background:var(--bg);color:var(--ink);min-height:40px}
+.aviso2{background:color-mix(in srgb,var(--coral) 12%,transparent);border-radius:14px;padding:12px 14px;font-size:14px;margin-top:12px}
 a:focus-visible,button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 @media(max-width:760px){.entrar .in{grid-template-columns:minmax(0,1fr)}.trilha .tp span{font-size:11px}}
 </style></head><body>
@@ -288,11 +310,11 @@ function painelImp(id,o,D){
  <div class="bl"><h3>Rituais</h3><p class="cap">Rotinas de acompanhamento</p>${rit.map(r=>`<div class="ac"><div>${esc(r.nome)}<small>${esc(r.quando||'')}${r.duracao?' · '+esc(r.duracao):''}</small></div><span class="d">${dbr(r.proximaData)}</span></div>`).join('')}</div>
  ${orc.total?`<div class="bl"><h3>Orçamento ${esc(D.ciclo||'')}</h3><p class="cap">Total planejado</p><div class="kpi" style="border:0;padding:0"><b>${brl(orc.total)}</b>${orc.receitaPrevista&&orc.receitaPrevista.base?`<span>Receita prevista (cenário base): ${brl(orc.receitaPrevista.base)}</span>`:''}</div>${(()=>{const r=Array.isArray(orc.realizado)?orc.realizado:[],pl=Array.isArray(orc.mensal)?orc.mensal:[];const ks=r.map((v,k)=>typeof v==='number'?k:-1).filter(k=>k>=0);if(!ks.length)return '';const R=ks.reduce((a,k)=>a+r[k],0),P=ks.reduce((a,k)=>a+(pl[k]||0),0),dv=P?Math.round((R-P)/P*100):0;return `<div class="ac" style="margin-top:12px"><div>Realizado em ${ks.length} ${ks.length===1?'mês':'meses'}<small>Planejado no período: ${brl(P)}</small></div><span class="d ${Math.abs(dv)>10?'s-fo':'s-ok'}">${brl(R)} (${dv>0?'+':''}${dv}%)</span></div>`})()}</div>`:''}
  </div>
- <div class="bl span2"><h3>Importado do planejamento</h3><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os dados ficam só neste navegador. <button class="btn s" id="limpimp" style="min-height:36px;padding:6px 12px;margin-left:8px">Remover dados importados</button></p></div>
+ <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:6px 0 10px"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar realizado</a></div><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os dados ficam só neste navegador. <button class="btn s" id="limpimp" style="min-height:36px;padding:6px 12px;margin-left:8px">Apagar dados deste navegador</button></p></div>
  </div>`;
 }
-document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=location.hash.slice(1)||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');try{localStorage.setItem(KIMP(id),t)}catch(x){}window.__imp=D;rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
-document.addEventListener('click',e=>{if(e.target.id==='limpimp'){try{localStorage.removeItem(KIMP(location.hash.slice(1)))}catch(x){}rota()}});
+document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=CUR||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');try{localStorage.setItem(KIMP(id),t)}catch(x){}window.__imp=D;rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
+document.addEventListener('click',e=>{if(e.target.id==='limpimp'&&CUR){try{localStorage.removeItem(KIMP(CUR))}catch(x){}rota()}});
 function painel(id,o){
  const imp=lerImp(id);if(imp)return painelImp(id,o,imp);
  const d=PAINEL[id];
@@ -319,15 +341,85 @@ function painel(id,o){
 function fasesHtml(id,o){return `<div class="trilha" role="list" aria-label="Fases">${NOMES.map((n,k)=>`<div role="listitem" class="tp ${o.fases[k].st==='ok'?'on':''} ${k===o.atual?'agora':''}"><i></i><span>${k+1}. ${esc(n)}</span></div>`).join('')}</div>
  <div class="fases">${o.fases.map((f,k)=>`<article class="fase ${k===o.atual?'destaque':''}"><span class="n">Fase ${k+1}</span><h3>${esc(NOMES[k])}</h3><span class="pill ${f.st}">${esc(f.tag)}</span><p>${esc(f.t)}</p>${f.lista?`<ul>${f.lista.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${f.acts?`<div class="acts">${f.acts.map(([l,u,c])=>`<a class="btn ${c}" href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join('')}</div>`:''}</article>`).join('')}</div>
  <p class="aviso">O planejamento abre no artefato original, que continua sendo a fonte. Tudo o que vocês ajustarem lá já aparece aqui, sem precisar importar de novo.</p>`}
+let CUR=null;
+const ABAS=[['','Painel'],['metas','Metas'],['acoes','Plano tático'],['rituais','Rituais'],['orcamento','Orçamento'],['fases','Fases']];
+const MESES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const STO=[['nao_iniciada','Não iniciada'],['no_rumo','No rumo'],['atencao','Atenção'],['fora_do_rumo','Fora do rumo'],['concluida','Concluída']];
+const optS=v=>STO.map(([k,l])=>`<option value="${k}"${k===v?' selected':''}>${l}</option>`).join('');
+const uid=p=>p+'_'+Math.random().toString(36).slice(2,9);
+function salvar(D){D.acompanhamentoGeradoEm=new Date().toISOString();try{localStorage.setItem(KIMP(CUR),JSON.stringify(D))}catch(e){alertaErro()}}
+function alertaErro(){const el=document.getElementById('err');if(el)el.textContent='Não consegui salvar neste navegador.'}
+function vazio(id){const o=ORGS[id];return {formato:'rummo.acompanhamento',versao:1,geradoEm:new Date().toISOString(),origem:'RUMMO',org:{id,nome:o.nome},ciclo:2027,prioridades:[],metas:[],acoes:[],rituais:[],radar:[],orcamento:{total:0,mensal:Array(12).fill(0),realizado:Array(12).fill(null)},documentos:[]}}
+function semDados(id){return `<div class="bl span2 imp" style="margin-top:22px"><h3>Comece o acompanhamento</h3><p class="cap">Traga o que o planejamento gerou ou comece em branco. Os dados ficam salvos neste navegador.</p><div class="tool" style="margin:0"><label class="btn p" for="fimp" style="cursor:pointer">Importar do planejamento (.json)</label><input id="fimp" type="file" accept=".json,application/json" hidden><button class="btn s" data-act="branco">Começar em branco</button></div><p class="cap" style="margin:12px 0 0">No planejamento 2027: aba de documentos, botão "Enviar para a RUMMO".</p><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--coral)"></p></div>`}
+function barraFerr(){return `<div class="tool"><button class="btn s sm" data-act="exportar">Exportar (.json)</button><label class="btn s sm" for="fimp" style="cursor:pointer">Importar outro arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><span class="sp"></span><button class="btn lk sm" data-act="zerar">Zerar acompanhamento</button><button class="btn lk sm" data-act="limpar">Apagar tudo</button></div><p id="err" class="cap" style="color:var(--coral);margin:0"></p>`}
+function abaMetas(D){
+ const g={};D.metas.forEach((m,i)=>{(g[m.perspectiva||'Sem perspectiva']=g[m.perspectiva||'Sem perspectiva']||[]).push([m,i])});
+ const ult=m=>m.checkins&&m.checkins.length?m.checkins[m.checkins.length-1]:null;
+ return barraFerr()+`<p class="cap">${D.metas.length} metas. Faça o check-in do mês em cada uma: o painel se atualiza sozinho.</p>`+Object.entries(g).map(([pp,ms])=>`<div class="grp"><h3>${esc(pp)}</h3>${ms.map(([m,i])=>{const u=ult(m);return `<div class="card"><div class="t"><div><b>${esc(m.indicador||m.titulo)}</b><div class="meta">${[m.titulo!==m.indicador?m.titulo:'',m.meta?'Meta: '+m.meta:'',m.responsavel,m.frequencia].filter(Boolean).map(esc).join(' · ')}</div></div>${stp(m.status)}</div>
+ ${u?`<div class="meta">Último check-in ${esc(u.periodo)}: <b>${esc(u.valor??'')}</b>${u.comentario?' · '+esc(u.comentario):''}</div>`:''}
+ <details><summary>Fazer check-in</summary><form class="fm" data-form="checkin" data-i="${i}"><label>Mês<select name="periodo">${MESES.map((x,k)=>`<option value="${D.ciclo||2027}-${String(k+1).padStart(2,'0')}">${x}/${D.ciclo||2027}</option>`).join('')}</select></label><label>Valor${m.unidade?' ('+esc(m.unidade)+')':''}<input name="valor" inputmode="decimal"></label><label>Status<select name="status">${optS(m.status==='nao_iniciada'?'no_rumo':m.status)}</select></label><label>Quem atualiza<input name="autor" value="${esc(m.responsavel||'')}"></label><label class="w2">Comentário<input name="comentario"></label><button class="btn p sm">Salvar check-in</button></form>
+ ${m.checkins&&m.checkins.length?`<ul class="hist">${m.checkins.slice().reverse().map(c=>`<li>${esc(c.periodo)} · ${esc(c.valor??'')} · ${(STI[c.status]||['',''])[1]}${c.comentario?' · '+esc(c.comentario):''}${c.autor?' · '+esc(c.autor):''}</li>`).join('')}</ul>`:''}</details>
+ <details><summary>Editar meta</summary><form class="fm" data-form="meta" data-i="${i}"><label class="w2">Indicador<input name="indicador" value="${esc(m.indicador||'')}"></label><label>Perspectiva<input name="perspectiva" value="${esc(m.perspectiva||'')}"></label><label>Meta (texto)<input name="meta" value="${esc(m.meta||'')}"></label><label>Base (número)<input name="baseNum" inputmode="decimal" value="${m.baseNum??''}"></label><label>Meta (número)<input name="metaNum" inputmode="decimal" value="${m.metaNum??''}"></label><label>Unidade<input name="unidade" value="${esc(m.unidade||'')}"></label><label>Responsável<input name="responsavel" value="${esc(m.responsavel||'')}"></label><label>Frequência<input name="frequencia" value="${esc(m.frequencia||'')}"></label><button class="btn s sm">Salvar meta</button><button type="button" class="btn lk sm" data-act="delmeta" data-i="${i}">Excluir meta</button></form></details></div>`}).join('')}</div>`).join('')+
+ `<div class="card"><b>Nova meta</b><form class="fm" data-form="novameta"><label class="w2">Indicador<input name="indicador" required></label><label>Perspectiva<input name="perspectiva"></label><label>Meta (número)<input name="metaNum" inputmode="decimal"></label><label>Unidade<input name="unidade"></label><label>Responsável<input name="responsavel"></label><button class="btn p sm">Adicionar</button></form></div>`;
+}
+function abaAcoes(D){
+ const hoje=new Date().toISOString().slice(0,10);
+ return barraFerr()+`<p class="cap">${D.acoes.length} ações. Atualize o status direto na lista.</p>`+D.acoes.map((a,i)=>({a,i})).sort((x,y)=>(x.a.dataLimite||'9')<(y.a.dataLimite||'9')?-1:1).map(({a,i})=>{const at=a.status!=='concluida'&&a.dataLimite&&a.dataLimite<hoje;return `<div class="card"><div class="t"><div><b>${esc(a.acao)}</b><div class="meta">${[a.responsavel,a.evidencia].filter(Boolean).map(esc).join(' · ')}</div></div><span class="d ${at?'s-fo':''}" style="font-weight:700;font-size:14px">${at?'Atrasada · ':''}${dbr(a.dataLimite)}</span></div>
+ <form class="fm" data-form="acao" data-i="${i}"><label>Status<select name="status" data-auto="1">${optS(a.status)}</select></label><label>Responsável<input name="responsavel" value="${esc(a.responsavel||'')}"></label><label>Prazo<input type="date" name="dataLimite" value="${esc(a.dataLimite||'')}"></label><button class="btn s sm">Salvar</button><button type="button" class="btn lk sm" data-act="delacao" data-i="${i}">Excluir</button></form></div>`}).join('')+
+ `<div class="card"><b>Nova ação</b><form class="fm" data-form="novaacao"><label class="w2">Ação<input name="acao" required></label><label>Responsável<input name="responsavel"></label><label>Prazo<input type="date" name="dataLimite"></label><button class="btn p sm">Adicionar</button></form></div>`;
+}
+function abaRituais(D){
+ return barraFerr()+`<p class="cap">Registre o que foi decidido em cada encontro.</p>`+D.rituais.map((r,i)=>`<div class="card"><div class="t"><div><b>${esc(r.nome)}</b><div class="meta">${[r.quando,r.duracao,r.conduz].filter(Boolean).map(esc).join(' · ')}</div></div><span style="font-weight:700;font-size:14px">Próximo: ${dbr(r.proximaData)||'a definir'}</span></div>
+ ${Array.isArray(r.pauta)&&r.pauta.length?`<div class="meta">Pauta: ${r.pauta.map(esc).join(' · ')}</div>`:''}
+ <details><summary>Registrar encontro</summary><form class="fm" data-form="registro" data-i="${i}"><label>Data<input type="date" name="data" value="${new Date().toISOString().slice(0,10)}"></label><label>Quem registra<input name="autor"></label><label>Próximo encontro<input type="date" name="proxima" value="${esc(r.proximaData||'')}"></label><label class="w2">O que foi decidido<textarea name="texto" rows="3"></textarea></label><button class="btn p sm">Salvar registro</button></form>
+ ${Array.isArray(r.registros)&&r.registros.length?`<ul class="hist">${r.registros.slice().reverse().map(x=>`<li>${dbr(x.data)} · ${esc(x.texto)}${x.autor?' · '+esc(x.autor):''}</li>`).join('')}</ul>`:''}</details></div>`).join('')+
+ `<div class="card"><b>Novo ritual</b><form class="fm" data-form="novorit"><label class="w2">Nome<input name="nome" required></label><label>Quando<input name="quando"></label><label>Próximo encontro<input type="date" name="proximaData"></label><button class="btn p sm">Adicionar</button></form></div>`;
+}
+function abaOrc(D){
+ const o=D.orcamento=D.orcamento||{};o.mensal=Array.isArray(o.mensal)?o.mensal:Array(12).fill(0);o.realizado=Array.isArray(o.realizado)?o.realizado:Array(12).fill(null);
+ let ap=0,ar=0;
+ return barraFerr()+`<p class="cap">Lance a despesa realizada de cada mês. O desvio aparece no painel.</p><div class="card scroll"><form data-form="orc"><table class="orc"><thead><tr><th>Mês</th><th>Planejado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody>${MESES.map((m,k)=>{const p=o.mensal[k]||0,r=o.realizado[k];if(typeof r==='number'){ap+=p;ar+=r}const dv=typeof r==='number'&&p?Math.round((r-p)/p*100):null;return `<tr><td>${m}</td><td>${brl(p)}</td><td><input name="r${k}" inputmode="decimal" value="${r??''}" aria-label="Realizado ${m}"></td><td class="${dv===null?'':Math.abs(dv)>10?'s-fo':'s-ok'}">${dv===null?'':(dv>0?'+':'')+dv+'%'}</td></tr>`}).join('')}</tbody><tfoot><tr><th>Total</th><th>${brl(o.mensal.reduce((a,b)=>a+(b||0),0))}</th><th>${brl(ar)}</th><th>${ap?((ar-ap)/ap*100>0?'+':'')+Math.round((ar-ap)/ap*100)+'%':''}</th></tr></tfoot></table><button class="btn p sm" style="margin-top:12px">Salvar realizado</button></form></div>`;
+}
 function espaco(id,aba){
- modo('app');const o=ORGS[id];quem.textContent=o.nome;sair.hidden=false;document.title='RUMMO: '+o.nome;
+ modo('app');CUR=id;const o=ORGS[id];quem.textContent=o.nome;sair.hidden=false;document.title='RUMMO: '+o.nome;
+ const D=lerImp(id);let corpo;
+ if(aba==='fases')corpo=fasesHtml(id,o);
+ else if(!aba)corpo=painel(id,o);
+ else if(!D)corpo=semDados(id);
+ else corpo={metas:abaMetas,acoes:abaAcoes,rituais:abaRituais,orcamento:abaOrc}[aba](D);
  app.innerHTML=`<section class="band"><div class="in">
  <div class="cab">${marcaOrg(o,id)}<div><h1>${esc(o.nome)}</h1><p>${esc(o.desc)}</p></div></div>
- <nav class="tabs" aria-label="Seções"><a href="#${id}"${aba?'':' aria-current="page"'}>Painel</a><a href="#${id}-fases"${aba?' aria-current="page"':''}>Fases</a></nav>
- ${aba?fasesHtml(id,o):painel(id,o)}</div></section>`;
+ <nav class="tabs" aria-label="Seções">${ABAS.map(([k,l])=>`<a href="#${id}${k?'-'+k:''}"${(aba||'')===k?' aria-current="page"':''}>${l}</a>`).join('')}</nav>
+ ${corpo}</div></section>`;
 }
+const num=v=>{if(v===''||v==null)return null;const n=Number(String(v).replace(/\./g,'').replace(',','.'));return isNaN(n)?null:n};
+document.addEventListener('submit',e=>{
+ const f=e.target.closest('form[data-form]');if(!f||!CUR)return;e.preventDefault();
+ const D=lerImp(CUR)||vazio(CUR),v=Object.fromEntries(new FormData(f)),i=+f.dataset.i,k=f.dataset.form;
+ if(k==='checkin'){const m=D.metas[i];m.checkins=m.checkins||[];const c={periodo:v.periodo,valor:num(v.valor),status:v.status,comentario:v.comentario.trim(),autor:v.autor.trim(),em:new Date().toISOString()};m.checkins=m.checkins.filter(x=>x.periodo!==c.periodo);m.checkins.push(c);m.checkins.sort((a,b)=>a.periodo<b.periodo?-1:1);m.status=m.checkins[m.checkins.length-1].status}
+ if(k==='meta'){const m=D.metas[i];['indicador','perspectiva','meta','unidade','responsavel','frequencia'].forEach(x=>m[x]=v[x].trim());m.baseNum=num(v.baseNum);m.metaNum=num(v.metaNum)}
+ if(k==='novameta')D.metas.push({id:uid('meta'),tipo:'indicador',titulo:v.indicador.trim(),indicador:v.indicador.trim(),perspectiva:v.perspectiva.trim(),metaNum:num(v.metaNum),baseNum:null,unidade:v.unidade.trim(),meta:'',responsavel:v.responsavel.trim(),frequencia:'Mensal',status:'nao_iniciada',checkins:[]});
+ if(k==='acao'){const a=D.acoes[i];a.status=v.status;a.responsavel=v.responsavel.trim();a.dataLimite=v.dataLimite}
+ if(k==='novaacao')D.acoes.push({id:uid('ac'),acao:v.acao.trim(),responsavel:v.responsavel.trim(),dataLimite:v.dataLimite,status:'nao_iniciada'});
+ if(k==='registro'){const r=D.rituais[i];r.registros=r.registros||[];if(v.texto.trim())r.registros.push({data:v.data,texto:v.texto.trim(),autor:v.autor.trim()});if(v.proxima)r.proximaData=v.proxima}
+ if(k==='novorit')D.rituais.push({id:uid('rit'),nome:v.nome.trim(),quando:v.quando.trim(),proximaData:v.proximaData,registros:[]});
+ if(k==='orc'){D.orcamento.realizado=MESES.map((_,j)=>num(v['r'+j]))}
+ salvar(D);const y=scrollY;rota();scrollTo(0,y);
+});
+document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.auto)e.target.form.requestSubmit()});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-act]');if(!b||!CUR)return;const act=b.dataset.act,i=+b.dataset.i;let D=lerImp(CUR);
+ if(act==='branco'){salvar(vazio(CUR));rota();return}
+ if(act==='exportar'&&D){const bl=new Blob([JSON.stringify(D,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=`rummo-${CUR}-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();return}
+ if(act==='zerar'&&D){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para zerar check-ins, status, registros e realizado';return}D.metas.forEach(m=>{m.checkins=[];m.status='nao_iniciada'});D.acoes.forEach(a=>a.status='nao_iniciada');D.rituais.forEach(r=>r.registros=[]);if(D.orcamento)D.orcamento.realizado=Array(12).fill(null);salvar(D);rota();return}
+ if(act==='limpar'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para apagar tudo deste navegador';return}try{localStorage.removeItem(KIMP(CUR))}catch(x){}location.hash=CUR;rota();return}
+ if(!D)return;
+ if(act==='delmeta'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para excluir';return}D.metas.splice(i,1)}
+ if(act==='delacao'){if(b.dataset.ok!=='1'){b.dataset.ok='1';b.textContent='Clique de novo para excluir';return}D.acoes.splice(i,1)}
+ if(act==='delmeta'||act==='delacao'){salvar(D);const y=scrollY;rota();scrollTo(0,y)}
+});
 const SECS=['plataforma','funcionalidades','fases-site','planos','rede','comecar'];
-function rota(){const h=location.hash.slice(1),f=h.endsWith('-fases'),b=f?h.slice(0,-6):h;if(SECS.includes(h)){if(!document.getElementById(h))site();document.getElementById(h).scrollIntoView();return}h==='entrar'?login():ORGS[b]?espaco(b,f):site();scrollTo(0,0)}
+function rota(){const h=location.hash.slice(1);if(SECS.includes(h)){if(!document.getElementById(h))site();document.getElementById(h).scrollIntoView();return}if(h==='entrar')return login(),scrollTo(0,0);let b=h,aba='';for(const [k] of ABAS){if(k&&h.endsWith('-'+k)){b=h.slice(0,-(k.length+1));aba=k}}ORGS[b]?espaco(b,aba):site();scrollTo(0,0)}
 sair.onclick=()=>{location.hash='entrar'};
 addEventListener('hashchange',rota);rota();
 }
