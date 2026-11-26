@@ -205,6 +205,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offse
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="var(--dot,#D9F301)"/></g></symbol></defs></svg>
 <header class="top"><a href="#" aria-label="RUMMO, início"><svg viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg></a><nav id="sitenav" aria-label="Site"><a href="#plataforma">Plataforma</a><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a><a href="#rede">Para financiadores</a></nav><span class="sp"></span><span id="quem" style="font-size:14px;opacity:.85"></span><button id="sair" hidden>Trocar organização</button><a class="cta" id="btnentrar" href="#entrar" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)">Entrar</a></header>
 <main id="app"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.10/dist/umd/supabase.min.js"></script>
 <script>
 {
 const IPB='https://claude.ai/artifact/BDtrPgkgyA5VXQ6NtAS8uh';
@@ -266,14 +267,35 @@ function site(){
  <div><h4>Plataforma</h4><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a></div><div><h4>Para quem</h4><a href="#plataforma">Organizações sociais</a><a href="#rede">Financiadores</a></div><div><h4>Acesso</h4><a href="#entrar">Entrar</a><a href="#comecar">Começar grátis</a></div></div><div class="bx">RUMMO · protótipo do site, novembro de 2026</div></footer>`;
  const fc=document.getElementById('fc');fc.onsubmit=e=>{e.preventDefault();fc.innerHTML='<div class="ok">Recebido no protótipo. Na versão real, a equipe RUMMO responde por e-mail.</div>'};
 }
-function login(){
+function caixaLogin(inner){return `<section class="login"><div class="box"><svg viewBox="0 0 316 100" style="width:120px;display:block;margin-bottom:14px;color:var(--azul);--dot:#6B3FA0" aria-hidden="true"><use href="#pal"/></svg>${inner}</div></section>`}
+function irParaOrg(){location.hash=MINHAS[0]||'pensando-bem';rota()}
+function login(msg){
  modo('login');document.title='RUMMO: entrar';
- app.innerHTML=`<section class="login"><div class="box"><svg viewBox="0 0 316 100" style="width:120px;display:block;margin-bottom:14px;color:var(--azul);--dot:#6B3FA0" aria-hidden="true"><use href="#pal"/></svg><h3>Entrar na RUMMO</h3><p class="cap">Acesse o espaço da sua organização.</p>
- <form id="fl" novalidate><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" placeholder="voce@organizacao.org.br"><label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password"><button class="btn p" type="submit">Entrar</button><div class="lk"><span>Esqueci a senha</span><span>Criar conta</span></div></form>
- <div id="orgs" hidden><p class="nota" style="border:0;padding:0;margin-top:18px">Suas organizações:</p>${Object.entries(ORGS).map(([id,o])=>`<button class="org" data-id="${id}">${marcaOrg(o,id)}<span><b>${esc(o.nome)}</b><small>${esc(o.desc)}</small></span></button>`).join('')}</div>
- <p class="nota">Protótipo: qualquer e-mail e senha entram. O login real chega com o app.</p></div></section>`;
- document.getElementById('fl').onsubmit=e=>{e.preventDefault();document.getElementById('fl').hidden=true;const o=document.getElementById('orgs');o.hidden=false;o.querySelector('.org').focus()};
- app.querySelectorAll('.org').forEach(b=>b.onclick=()=>{location.hash=b.dataset.id});
+ if(SESS&&MINHAS.length){
+  app.innerHTML=caixaLogin(`<h3>Suas organizações</h3><p class="cap">Você entrou como ${esc(SESS.user.email)}.</p>${MINHAS.filter(id=>ORGS[id]).map(id=>`<button class="org" data-id="${id}">${marcaOrg(ORGS[id],id)}<span><b>${esc(ORGS[id].nome)}</b><small>${esc(ORGS[id].desc)}</small></span></button>`).join('')}<button class="btn s" id="sairb" style="margin-top:14px">Sair</button>`);
+  app.querySelectorAll('.org').forEach(b=>b.onclick=()=>{location.hash=b.dataset.id});
+  document.getElementById('sairb').onclick=sairConta;return;
+ }
+ app.innerHTML=caixaLogin(`<h3>Entrar na RUMMO</h3><p class="cap">Acesse o espaço da sua organização.</p>
+ <form id="fl"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" required placeholder="voce@organizacao.org.br"><label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password" required><button class="btn p" type="submit">Entrar</button><div class="lk"><button type="button" class="btn lk sm" id="esq" style="width:auto;margin:0;padding:0;min-height:0">Esqueci a senha</button></div><p id="lerr" class="cap" role="alert" style="margin:12px 0 0">${esc(msg||'')}</p></form>
+ <p class="nota">Quer conhecer antes? <a href="#mare-alta" style="color:inherit;font-weight:700">Abrir a demonstração</a></p>`);
+ const er=document.getElementById('lerr');
+ if(!SB){er.textContent='Não consegui carregar o login. Confira a internet e recarregue a página.';return}
+ document.getElementById('fl').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button[type=submit]');b.disabled=true;b.textContent='Entrando...';er.textContent='';
+  const {error}=await SB.auth.signInWithPassword({email:document.getElementById('em').value.trim(),password:document.getElementById('pw').value});
+  if(error){b.disabled=false;b.textContent='Entrar';er.textContent=/confirm/i.test(error.message)?'Confirme seu e-mail pelo link que enviamos.':'E-mail ou senha incorretos.';return}
+  await carregar();irParaOrg()};
+ document.getElementById('esq').onclick=async()=>{const em=document.getElementById('em').value.trim();if(!em){er.textContent='Digite seu e-mail acima e clique de novo em "Esqueci a senha".';return}
+  const {error}=await SB.auth.resetPasswordForEmail(em,{redirectTo:location.origin+'/'});er.textContent=error?'Não consegui enviar agora. Tente de novo em alguns minutos.':'Se esse e-mail tiver acesso, enviamos um link para criar uma nova senha.'};
+}
+function novaSenha(){
+ modo('login');document.title='RUMMO: criar senha';
+ app.innerHTML=caixaLogin(`<h3>Crie sua senha</h3><p class="cap">${SESS?'Para '+esc(SESS.user.email)+'. ':''}Use pelo menos 8 caracteres.</p><form id="fs"><label for="p1">Nova senha</label><input id="p1" type="password" autocomplete="new-password" minlength="8" required><label for="p2">Repita a senha</label><input id="p2" type="password" autocomplete="new-password" minlength="8" required><button class="btn p" type="submit">Salvar senha e entrar</button><p id="serr" class="cap" role="alert" style="margin:12px 0 0"></p></form>`);
+ document.getElementById('fs').onsubmit=async e=>{e.preventDefault();const p1=document.getElementById('p1').value,p2=document.getElementById('p2').value,er=document.getElementById('serr');
+  if(p1.length<8){er.textContent='A senha precisa ter pelo menos 8 caracteres.';return}if(p1!==p2){er.textContent='As duas senhas não são iguais.';return}
+  if(!SESS){er.textContent='Esse link expirou. Peça um novo em "Esqueci a senha".';return}
+  const {error}=await SB.auth.updateUser({password:p1});if(error){er.textContent='Não consegui salvar: '+error.message;return}
+  await carregar();irParaOrg()};
 }
 const PAINEL={
  'mare-alta':{
@@ -287,8 +309,25 @@ const SN={ok:['s-ok','No rumo'],at:['s-at','Atenção'],fo:['s-fo','Fora do rumo
 const COR={ok:'var(--azul)',at:'#E39B2D',fo:'#C0392B'};
 function faixa(o){return `<div class="faixa" aria-hidden="true">${o.fases.map((f,k)=>`<span class="${k===o.atual?'agora':f.st==='ok'?'on':''}"></span>`).join('')}</div>`}
 const KIMP=id=>'rummo_acomp_'+id;
-const BASE={};
-function lerImp(id){try{const t=localStorage.getItem(KIMP(id));if(t)return JSON.parse(t)}catch(e){}return BASE[id]?JSON.parse(JSON.stringify(BASE[id])):null}
+const SB=window.supabase?window.supabase.createClient('https://butugpfnjxftixiisvgu.supabase.co','sb_publishable_PqSLNMVAgP1SNEoKJ6MViw_9m6Kgzj6'):null;
+const REMOTO=['pensando-bem'];let SESS=null,MINHAS=[];const MEM={};
+async function carregar(){
+ if(!SB)return;const {data}=await SB.auth.getSession();SESS=data.session;if(!SESS){MINHAS=[];return}
+ const m=await SB.from('membros').select('org_id');MINHAS=(m.data||[]).map(x=>x.org_id);
+ const r=await SB.from('acompanhamento').select('org_id,dados');(r.data||[]).forEach(x=>{MEM[x.org_id]=x.dados});
+ for(const id of Object.keys(MEM))if(MEM[id]&&MEM[id].gerarExemplo){MEM[id]=gerarExemplo(MEM[id]);salvar(MEM[id],id)}
+}
+function gerarExemplo(D){
+ let sd=7;const rnd=()=>{sd=sd*16807%2147483647;return sd/2147483647},pick=a=>a[Math.floor(rnd()*a.length)];
+ const coms={no_rumo:['Dentro do previsto','Evoluindo bem','Bateu o esperado do mês'],atencao:['Abaixo do esperado, plano de ajuste na reunião mensal','Atraso na coleta dos dados'],fora_do_rumo:['Precisa de plano de correção','Sem avanço no mês']};
+ (D.metas||[]).forEach((m,i)=>{m.checkins=[];if(i%7===6){m.status='nao_iniciada';return}const b=m.baseNum||0,t=m.metaNum,tr=['no_rumo','no_rumo','atencao','no_rumo','no_rumo','fora_do_rumo','no_rumo','no_rumo','atencao','no_rumo'][i%10];
+  ['01','02','03'].forEach((mes,k)=>{const st=k===0&&tr!=='fora_do_rumo'?'no_rumo':tr,f={no_rumo:.09,atencao:.05,fora_do_rumo:.02}[tr]*(k+1);m.checkins.push({periodo:'2027-'+mes,valor:typeof t==='number'?Math.round((b+(t-b)*f)*10)/10:null,status:st,comentario:pick(coms[st]),autor:m.responsavel||'Giovanna',em:'2027-'+mes+'-28T12:00:00Z'})});m.status=m.checkins[2].status});
+ const sa=['concluida','concluida','concluida','no_rumo','no_rumo','concluida','atencao','no_rumo','nao_iniciada','no_rumo'];(D.acoes||[]).forEach((a,i)=>{a.status=sa[i%sa.length]});
+ const rg=[['2027-03-01','Prioridades da semana definidas; captação segue como foco.'],['2027-02-26','Reunião de resultados: 2 metas em atenção, responsáveis trazem plano na próxima.'],['2027-03-03','Check-in individual feito; ajustes de prazo nas ações de comunicação.']];
+ (D.rituais||[]).forEach((r,i)=>{r.registros=rg[i]?[{data:rg[i][0],texto:rg[i][1],autor:'Giovanna'}]:[]});
+ const pl=Array(12).fill(100000);pl[11]=140000;D.orcamento={total:pl.reduce((a,b)=>a+b,0),mensal:pl,realizado:[96500,104200,99100].concat(Array(9).fill(null))};
+ D.exemplo=true;delete D.gerarExemplo;D.geradoEm='2027-03-31T12:00:00Z';return D}
+function lerImp(id){if(REMOTO.includes(id))return MEM[id]?JSON.parse(JSON.stringify(MEM[id])):null;try{const t=localStorage.getItem(KIMP(id));if(t)return JSON.parse(t)}catch(e){}return null}
 const STI={no_rumo:['s-ok','No rumo'],atencao:['s-at','Atenção'],fora_do_rumo:['s-fo','Fora do rumo'],concluida:['s-ok','Concluída'],nao_iniciada:['','Não iniciada']};
 const stp=st=>{const x=STI[st]||['',String(st||'Sem status')];return `<span class="sem ${x[0]}" style="${x[0]?'':'color:var(--cinza)'}">${esc(x[1])}</span>`};
 const brl=n=>typeof n==='number'?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}):'';
@@ -334,7 +373,7 @@ function painelImp(id,o,D){
  <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:6px 0 10px"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar realizado</a></div><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os check-ins ficam salvos neste navegador.</p></div>
  </div>`;
 }
-document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=CUR||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');try{localStorage.setItem(KIMP(id),t)}catch(x){}window.__imp=D;rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
+document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=CUR||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');salvar(D,id);rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
 document.addEventListener('click',e=>{if(e.target.id==='limpimp'&&CUR){try{localStorage.removeItem(KIMP(CUR))}catch(x){}rota()}});
 function painel(id,o){
  const imp=lerImp(id);if(imp)return painelImp(id,o,imp);
@@ -368,8 +407,10 @@ const MESES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','
 const STO=[['nao_iniciada','Não iniciada'],['no_rumo','No rumo'],['atencao','Atenção'],['fora_do_rumo','Fora do rumo'],['concluida','Concluída']];
 const optS=v=>STO.map(([k,l])=>`<option value="${k}"${k===v?' selected':''}>${l}</option>`).join('');
 const uid=p=>p+'_'+Math.random().toString(36).slice(2,9);
-function salvar(D){D.acompanhamentoGeradoEm=new Date().toISOString();try{localStorage.setItem(KIMP(CUR),JSON.stringify(D))}catch(e){alertaErro()}}
-function alertaErro(){const el=document.getElementById('err');if(el)el.textContent='Não consegui salvar neste navegador.'}
+function salvar(D,id){id=id||CUR;D.acompanhamentoGeradoEm=new Date().toISOString();
+ if(REMOTO.includes(id)){MEM[id]=JSON.parse(JSON.stringify(D));if(SB&&SESS)SB.from('acompanhamento').upsert({org_id:id,dados:D,atualizado_em:new Date().toISOString(),atualizado_por:SESS.user.id}).then(({error})=>{if(error)alertaErro()});return}
+ try{localStorage.setItem(KIMP(id),JSON.stringify(D))}catch(e){alertaErro()}}
+function alertaErro(){const el=document.getElementById('err');if(el)el.textContent='Não consegui salvar. Confira a internet e tente de novo.'}
 function vazio(id){const o=ORGS[id];return {formato:'rummo.acompanhamento',versao:1,geradoEm:new Date().toISOString(),origem:'RUMMO',org:{id,nome:o.nome},ciclo:2027,prioridades:[],metas:[],acoes:[],rituais:[],radar:[],orcamento:{total:0,mensal:Array(12).fill(0),realizado:Array(12).fill(null)},documentos:[]}}
 function semDados(id){return `<div class="bl span2 imp" style="margin-top:22px"><h3>Comece o acompanhamento</h3><p class="cap">Traga o que o planejamento gerou ou comece em branco. Os dados ficam salvos neste navegador.</p><div class="tool" style="margin:0"><label class="btn p" for="fimp" style="cursor:pointer">Importar do planejamento (.json)</label><input id="fimp" type="file" accept=".json,application/json" hidden><button class="btn s" data-act="branco">Começar em branco</button></div><p class="cap" style="margin:12px 0 0">No planejamento 2027: aba de documentos, botão "Enviar para a RUMMO".</p><p id="imperr" class="cap" style="margin:10px 0 0;color:var(--acct)"></p></div>`}
 function barraFerr(){return `<div class="tool"><button class="btn s sm" data-act="exportar">Exportar (.json)</button><label class="btn s sm" for="fimp" style="cursor:pointer">Importar outro arquivo</label><input id="fimp" type="file" accept=".json,application/json" hidden><span class="sp"></span><button class="btn lk sm" data-act="zerar">Zerar acompanhamento</button><button class="btn lk sm" data-act="limpar">Apagar tudo</button></div><p id="err" class="cap" style="color:var(--acct);margin:0"></p>`}
@@ -402,7 +443,9 @@ function abaOrc(D){
  return barraFerr()+`<p class="cap">Lance o planejado e o realizado de cada mês. O gráfico e o desvio aparecem no painel.</p><div class="card scroll"><form data-form="orc"><table class="orc"><thead><tr><th>Mês</th><th>Planejado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody>${MESES.map((m,k)=>{const p=o.mensal[k]||0,r=o.realizado[k];if(typeof r==='number'){ap+=p;ar+=r}const dv=typeof r==='number'&&p?Math.round((r-p)/p*100):null;return `<tr><td>${m}</td><td><input name="p${k}" inputmode="decimal" value="${p||''}" aria-label="Planejado ${m}"></td><td><input name="r${k}" inputmode="decimal" value="${r??''}" aria-label="Realizado ${m}"></td><td class="${dv===null?'':Math.abs(dv)>10?'s-fo':'s-ok'}">${dv===null?'':(dv>0?'+':'')+dv+'%'}</td></tr>`}).join('')}</tbody><tfoot><tr><th>Total</th><th>${brl(o.mensal.reduce((a,b)=>a+(b||0),0))}</th><th>${brl(ar)}</th><th>${ap?((ar-ap)/ap*100>0?'+':'')+Math.round((ar-ap)/ap*100)+'%':''}</th></tr></tfoot></table><button class="btn p sm" style="margin-top:12px">Salvar orçamento</button></form></div>`;
 }
 function espaco(id,aba){
- modo('app');CUR=id;const o=ORGS[id];quem.textContent=o.nome;sair.hidden=false;document.title='RUMMO: '+o.nome;
+ if(REMOTO.includes(id)&&!SESS){location.hash='entrar';return}
+ if(REMOTO.includes(id)&&!MINHAS.includes(id)){modo('login');app.innerHTML=caixaLogin(`<h3>Sem acesso</h3><p class="cap">Seu login não tem acesso a esta organização. Fale com quem administra a conta.</p><button class="btn s" onclick="sairConta()">Sair</button>`);return}
+ modo('app');CUR=id;const o=ORGS[id];quem.textContent=SESS&&REMOTO.includes(id)?SESS.user.email:o.nome;sair.hidden=false;sair.textContent=SESS?'Sair':'Trocar organização';document.title='RUMMO: '+o.nome;
  const D=lerImp(id);let corpo;
  if(aba==='fases')corpo=fasesHtml(id,o);
  else if(!aba)corpo=painel(id,o);
@@ -441,8 +484,18 @@ document.addEventListener('click',e=>{
 });
 const SECS=['plataforma','funcionalidades','fases-site','planos','rede','comecar'];
 function rota(){const h=location.hash.slice(1);if(SECS.includes(h)){if(!document.getElementById(h))site();document.getElementById(h).scrollIntoView();return}if(h==='entrar')return login(),scrollTo(0,0);let b=h,aba='';for(const [k] of ABAS){if(k&&h.endsWith('-'+k)){b=h.slice(0,-(k.length+1));aba=k}}ORGS[b]?espaco(b,aba):site();scrollTo(0,0)}
-sair.onclick=()=>{location.hash='entrar'};
-addEventListener('hashchange',rota);rota();
+async function sairConta(){if(SB&&SESS)await SB.auth.signOut();SESS=null;MINHAS=[];Object.keys(MEM).forEach(k=>delete MEM[k]);if(location.hash==='#entrar')login();else location.hash='entrar'}
+sair.onclick=()=>{if(SESS)sairConta();else location.hash='entrar'};
+addEventListener('hashchange',()=>{if(/access_token|error_code/.test(location.hash))return;rota()});
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState!=='visible'||!SB||!SESS||!CUR||!REMOTO.includes(CUR))return;const r=await SB.from('acompanhamento').select('dados').eq('org_id',CUR).maybeSingle();if(r.data){MEM[CUR]=r.data.dados;if(location.hash==='#'+CUR)rota()}});
+(async()=>{
+ const h=location.hash,tipo=(h.match(/type=([a-z]+)/)||[])[1],erro=/error_code=/.test(h);
+ if(SB){SB.auth.onAuthStateChange((ev,se)=>{SESS=se;if(ev==='PASSWORD_RECOVERY')novaSenha()});try{await carregar()}catch(e){}}
+ if(/access_token|error_code|type=/.test(h))history.replaceState(null,'',location.pathname+(erro?'#entrar':''));
+ if(erro)return login('Esse link expirou ou já foi usado. Digite seu e-mail e clique em "Esqueci a senha" para receber outro.');
+ if(tipo==='invite'||tipo==='recovery')return novaSenha();
+ rota();
+})();
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
 </script></body></html>
