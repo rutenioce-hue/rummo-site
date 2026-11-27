@@ -467,7 +467,7 @@ async function iniciarPlan(id){
 }
 async function sincPlan(){
  if(!PLAN||!SESS)return;const mud=[];
- for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!/^ipb2027_/.test(k))continue;const v=localStorage.getItem(k);if(PLAN.ult[k]!==v)mud.push({org_id:PLAN.id,chave:k,valor:v,atualizado_em:new Date().toISOString(),atualizado_por:SESS.user.id})}
+ for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!/^ipb2027_plano/.test(k))continue;const v=localStorage.getItem(k);if(PLAN.ult[k]!==v)mud.push({org_id:PLAN.id,chave:k,valor:v,atualizado_em:new Date().toISOString(),atualizado_por:SESS.user.id})}
  if(!mud.length)return;const {error}=await SB.from('planejamento').upsert(mud);const s=document.getElementById('planst');
  if(error){if(s)s.textContent='Não consegui salvar agora. Vou tentar de novo.';return}
  mud.forEach(r=>PLAN.ult[r.chave]=r.valor);if(s)s.textContent='Salvo na RUMMO às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'.';
