@@ -215,6 +215,21 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offse
 .chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}.chip{display:flex;gap:12px;align-items:flex-start;background:var(--trilho);border-radius:14px;padding:14px}.chip b{display:block;font-size:15px}.chip small{color:var(--cinza);font-size:13px}.nn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--dado);color:light-dark(#fff,#21132F);display:grid;place-items:center;font-weight:800}
 .graf .ac b{font-weight:700}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark}:root:not([data-theme=light]) .pill{color:#D9F301}:root:not([data-theme=light]) .btn.s{color:#D9F301}:root:not([data-theme=light]) .plano .pr{color:#D9F301}:root:not([data-theme=light]) .card summary{color:#D9F301}}
+
+.menu{display:flex;gap:4px;margin-top:22px;border-bottom:1px solid var(--linha);flex-wrap:wrap;align-items:flex-end;position:relative;z-index:5}
+.menu .mi{padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--cinza);text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-1px;cursor:pointer;list-style:none}
+.menu summary::-webkit-details-marker{display:none}
+.menu .mi[aria-current],.menu .mi.on{color:var(--ink);border-color:var(--acct)}
+.menu .mi:hover{color:var(--ink)}.menu .sh{display:none}
+.dd{position:relative}.dd .pop{position:absolute;top:calc(100% + 6px);left:0;min-width:290px;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:8px;box-shadow:0 18px 40px rgba(20,8,35,.22);display:grid;gap:2px}
+.dd .pop a{display:block;padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--ink)}.dd .pop a:hover,.dd .pop a[aria-current]{background:var(--trilho)}
+.dd .pop b{display:block;font-size:15px}.dd .pop small{display:block;color:var(--cinza);font-size:13px;margin-top:2px}
+@media (max-width:640px){.menu .lg{display:none}.menu .sh{display:inline}.menu{flex-wrap:nowrap;gap:0}.menu .mi{padding:8px 9px;font-size:14px;min-height:40px}.kpi.kd{flex-direction:column;align-items:flex-start}.dd .pop{position:fixed;left:12px;right:12px;top:auto;min-width:0}}
+.planbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:18px 0 12px}
+.planbar .st{font-size:13px;color:var(--cinza)}
+#planf{width:100%;height:calc(100vh - 150px);min-height:620px;border:1px solid var(--linha);border-radius:18px;background:#fff;display:block}
+.rel h2{font-size:26px;margin:0 0 4px}.rel .sec{margin-top:22px}.rel table{width:100%;border-collapse:collapse;font-size:14px}.rel td,.rel th{padding:8px 6px;border-top:1px solid var(--linha);text-align:left;vertical-align:top}.rel th{color:var(--cinza);font-weight:700}
+@media print{header.top,.menu,.cab,.noprint,.planbar{display:none!important}body{background:#fff}.band{padding:0!important}.bl,.kpi{break-inside:avoid;border-color:#ddd}}
 </style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#381A56"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RUMMO"></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="var(--dot,#D9F301)"/></g></symbol></defs></svg>
 <header class="top"><a href="#" aria-label="RUMMO, início"><svg viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg></a><nav id="sitenav" aria-label="Site"><a href="#plataforma">Plataforma</a><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a><a href="#rede">Para financiadores</a></nav><span class="sp"></span><span id="quem" style="font-size:14px;opacity:.85"></span><button id="sair" hidden>Trocar organização</button><a class="cta" id="btnentrar" href="#entrar" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)">Entrar</a></header>
@@ -226,11 +241,11 @@ const IPB='https://claude.ai/artifact/BDtrPgkgyA5VXQ6NtAS8uh';
 const DEMO='https://claude.ai/artifact/GX9X2tKkCDBEG8Be8WiDzX';
 const NOMES=['Planejamento estratégico','Plano tático','Acompanhamento de metas','Rotinas da equipe','Avaliação de desempenho'];
 const ORGS={
- 'pensando-bem':{nome:'Pensando Bem',sigla:'PB',desc:'Planejamento 2027',atual:1,fases:[
-  {st:'ok',tag:'Ativa',t:'Missão, visão, valores, diagnóstico, papéis, metas e orçamento. É o planejamento completo que vocês já construíram.',acts:[['Abrir o planejamento 2027',IPB,'p']]},
-  {st:'vem',tag:'Em finalização',t:'Desdobra cada meta em ações, com responsável, prazo e entregas. Vai ser gerado quando o planejamento estratégico for fechado.',lista:['Ações por meta e por área','Responsável e prazo de cada ação','Marcos do trimestre']},
-  {st:'',tag:'Próxima fase',t:'O time registra o andamento das metas todo mês e o painel mostra quem está no rumo e quem precisa de ajuda.',lista:['Check-in mensal de cada meta','Semáforo: no rumo, atenção, fora do rumo','Painel da diretoria']},
-  {st:'',tag:'Depois',t:'Os encontros que mantêm o plano vivo, com pauta puxada das metas.',lista:['1:1 entre líder e pessoa, com pauta','Reunião mensal de resultados','Resumo automático para o conselho']},
+ 'pensando-bem':{nome:'Pensando Bem',sigla:'PB',desc:'Planejamento 2027',atual:2,fases:[
+  {st:'ok',tag:'Ativa',t:'Ponto de partida, diagnóstico, papéis, prioridades, metas e orçamento, respondidos em etapas e salvos na RUMMO.',acts:[['Abrir o planejamento','#pensando-bem-planejamento','p']]},
+  {st:'ok',tag:'Ativa',t:'Cada meta vira ações com responsável e prazo. Venha do planejamento com um clique.',acts:[['Ver o plano tático','#pensando-bem-acoes','s']]},
+  {st:'ok',tag:'Ativa',t:'Check-in mensal de cada meta, semáforo e painel da diretoria.',acts:[['Fazer check-in','#pensando-bem-metas','s']]},
+  {st:'vem',tag:'Começando',t:'Os encontros que mantêm o plano vivo, com pauta puxada das metas.',acts:[['Registrar ritual','#pensando-bem-rituais','s']]},
   {st:'',tag:'Opcional',t:'Ciclo de avaliação ligado às metas e aos valores da organização.',lista:['Autoavaliação e avaliação do líder','Valores como critérios','Plano de desenvolvimento']}]},
  'mare-alta':{nome:'Associação Maré Alta',sigla:'MA',desc:'Organização de exemplo (fictícia)',atual:2,fases:[
   {st:'ok',tag:'Ativa',t:'Cadastro, missão, visão e valores com o Ben, diagnóstico, papéis, metas e orçamento.',acts:[['Abrir o planejamento',DEMO,'p']]},
@@ -428,10 +443,80 @@ function painel(id,o){
  ${fasesBl}</div><p class="ficticio">Dados fictícios, só para demonstração.</p>`;
 }
 function fasesHtml(id,o){return `<div class="trilha" role="list" aria-label="Fases">${NOMES.map((n,k)=>`<div role="listitem" class="tp ${o.fases[k].st==='ok'?'on':''} ${k===o.atual?'agora':''}"><i></i><span>${k+1}. ${esc(n)}</span></div>`).join('')}</div>
- <div class="fases">${o.fases.map((f,k)=>`<article class="fase ${k===o.atual?'destaque':''}"><span class="n">Fase ${k+1}</span><h3>${esc(NOMES[k])}</h3><span class="pill ${f.st}">${esc(f.tag)}</span><p>${esc(f.t)}</p>${f.lista?`<ul>${f.lista.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${f.acts?`<div class="acts">${f.acts.map(([l,u,c])=>`<a class="btn ${c}" href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join('')}</div>`:''}</article>`).join('')}</div>
- <p class="aviso">O planejamento abre no artefato original, que continua sendo a fonte. Tudo o que vocês ajustarem lá já aparece aqui, sem precisar importar de novo.</p>`}
+ <div class="fases">${o.fases.map((f,k)=>`<article class="fase ${k===o.atual?'destaque':''}"><span class="n">Fase ${k+1}</span><h3>${esc(NOMES[k])}</h3><span class="pill ${f.st}">${esc(f.tag)}</span><p>${esc(f.t)}</p>${f.lista?`<ul>${f.lista.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${f.acts?`<div class="acts">${f.acts.map(([l,u,c])=>`<a class="btn ${c}" href="${u}"${u.startsWith('#')?'':' target="_blank" rel="noopener"'}>${esc(l)}${u.startsWith('#')?'':' ↗'}</a>`).join('')}</div>`:''}</article>`).join('')}</div>
+ `}
+
+let PLAN=null;
+function abaPlan(id){return `<div class="planbar noprint"><div><b>Planejamento estratégico</b><div class="st" id="planst">Abrindo o planejamento...</div></div><div class="tool" style="margin:0"><button class="btn p sm" id="planlevar" disabled>Levar metas e ações para o painel</button></div></div><p id="planmsg" class="cap" role="status" style="margin:0 0 10px"></p><iframe id="planf" title="Planejamento estratégico"></iframe>`}
+async function iniciarPlan(id){
+ const st=()=>document.getElementById('planst'),fr=document.getElementById('planf');
+ if(PLAN&&PLAN.timer){clearInterval(PLAN.timer)}PLAN={id,ult:{}};
+ try{
+  const kr=await SB.from('segredos').select('valor').eq('org_id',id).eq('nome','chave_planejamento').maybeSingle();
+  if(!kr.data)throw new Error('sem chave');
+  const raw=Uint8Array.from(atob(kr.data.valor),c=>c.charCodeAt(0)),key=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);
+  const bin=new Uint8Array(await (await fetch('/planejamento.bin',{cache:'no-cache'})).arrayBuffer());
+  const gz=await crypto.subtle.decrypt({name:'AES-GCM',iv:bin.slice(0,12)},key,bin.slice(12));
+  const html=await new Response(new Blob([gz]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  const rows=await SB.from('planejamento').select('chave,valor').eq('org_id',id);
+  (rows.data||[]).forEach(r=>{try{localStorage.setItem(r.chave,r.valor);PLAN.ult[r.chave]=r.valor}catch(e){}});
+  if(!fr)return;fr.srcdoc=html;
+  fr.onload=()=>{const b=document.getElementById('planlevar');if(b)b.disabled=false;if(st())st().textContent='Tudo o que vocês responderem fica salvo na RUMMO.'};
+  PLAN.timer=setInterval(()=>sincPlan(),4000);
+ }catch(e){if(st())st().textContent='Não consegui abrir o planejamento. Recarregue a página e tente de novo.'}
+}
+async function sincPlan(){
+ if(!PLAN||!SESS)return;const mud=[];
+ for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!/^ipb2027_/.test(k))continue;const v=localStorage.getItem(k);if(PLAN.ult[k]!==v)mud.push({org_id:PLAN.id,chave:k,valor:v,atualizado_em:new Date().toISOString(),atualizado_por:SESS.user.id})}
+ if(!mud.length)return;const {error}=await SB.from('planejamento').upsert(mud);const s=document.getElementById('planst');
+ if(error){if(s)s.textContent='Não consegui salvar agora. Vou tentar de novo.';return}
+ mud.forEach(r=>PLAN.ult[r.chave]=r.valor);if(s)s.textContent='Salvo na RUMMO às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'.';
+}
+addEventListener('pagehide',()=>{sincPlan()});
+addEventListener('hashchange',()=>{if(PLAN&&PLAN.timer&&!/-planejamento$/.test(location.hash)){sincPlan();clearInterval(PLAN.timer);PLAN.timer=null}});
+function mesclar(D,P){
+ const byId=a=>Object.fromEntries((a||[]).map(x=>[x.id,x]));
+ if(D.exemplo){D={formato:'rummo.acompanhamento',versao:1,org:D.org,ciclo:P.ciclo||D.ciclo,metas:[],acoes:[],rituais:[],orcamento:{total:0,mensal:Array(12).fill(0),realizado:Array(12).fill(null)}}}
+ const om=byId(D.metas),oa=byId(D.acoes),orr=byId(D.rituais),pm=byId(P.metas);
+ D.metas=(P.metas||[]).map(m=>{const o=om[m.id];return o?Object.assign({},m,{checkins:o.checkins||[],status:o.status||m.status}):Object.assign({checkins:[]},m)}).concat((D.metas||[]).filter(o=>!pm[o.id]&&(o.checkins||[]).length));
+ D.acoes=(P.acoes||[]).map(a=>{const o=oa[a.id];return o?Object.assign({},a,{status:o.status||a.status}):a});
+ D.rituais=(P.rituais||[]).map(r=>{const o=orr[r.id];return o?Object.assign({},r,{registros:o.registros||[],proximaData:o.proximaData||r.proximaData}):Object.assign({registros:[]},r)});
+ if(P.prioridades&&P.prioridades.length)D.prioridades=P.prioridades;if(P.radar)D.radar=P.radar;if(P.ciclo)D.ciclo=P.ciclo;
+ const po=P.orcamento||{};if(Array.isArray(po.mensal)&&po.mensal.some(v=>v>0)){D.orcamento=D.orcamento||{};D.orcamento.mensal=po.mensal;D.orcamento.total=po.total||po.mensal.reduce((a,b)=>a+(b||0),0);if(po.receitaPrevista)D.orcamento.receitaPrevista=po.receitaPrevista;if(!Array.isArray(D.orcamento.realizado))D.orcamento.realizado=Array(12).fill(null)}
+ D.origem='Planejamento estratégico na RUMMO';D.geradoEm=new Date().toISOString();delete D.exemplo;return D}
+document.addEventListener('click',e=>{if(e.target.id!=='planlevar')return;const msg=document.getElementById('planmsg'),fr=document.getElementById('planf');
+ let P=null;try{sincPlan();P=fr.contentWindow.rummoPack()}catch(x){}
+ if(!P){msg.textContent='Não consegui ler o planejamento. Espere ele abrir e tente de novo.';return}
+ if(!(P.metas||[]).length&&!(P.acoes||[]).length){msg.textContent='O planejamento ainda não tem metas aprovadas. Quando vocês aprovarem metas e ações nas etapas, clique de novo.';return}
+ const D=mesclar(lerImp(PLAN.id)||vazio(PLAN.id),P);salvar(D,PLAN.id);
+ msg.innerHTML=`Pronto: ${D.metas.length} metas, ${D.acoes.length} ações e ${D.rituais.length} rituais no painel. Os check-ins que já existiam foram mantidos. <a href="#${PLAN.id}" style="color:var(--acct);font-weight:700">Ver o painel</a>`});
+function abaBen(id){return `<div class="graf"><div class="bl span2"><h3>Fale com o Ben</h3><p class="cap">O Ben vai responder dúvidas sobre o plano, sugerir ações para metas em atenção e escrever o resumo do mês para o conselho.</p><div class="ac"><div><b>Exemplos do que perguntar</b><small>"Quais metas de captação estão atrasadas?" · "O que levar para a reunião mensal?" · "Escreva o resumo de março para o conselho."</small></div></div><p class="vz" style="margin-top:14px">Para ligar o Ben, falta conectar uma chave da API da Anthropic na conta da RUMMO. Enquanto isso, o <a href="#${id}-relatorio">Relatório do mês</a> já monta o resumo com os números.</p></div></div>`}
+function abaRel(id,o,D){
+ const metas=D.metas||[],acoes=D.acoes||[],rit=D.rituais||[],orc=D.orcamento||{},hoje=new Date().toISOString().slice(0,10);
+ const ult=m=>(m.checkins||[]).slice(-1)[0],stM=m=>(ult(m)&&ult(m).status)||m.status||'nao_iniciada';
+ const per=[...new Set(metas.flatMap(m=>(m.checkins||[]).map(c=>c.periodo)))].sort(),pAt=per[per.length-1];
+ const mesN=p=>p?MESES[+p.slice(5,7)-1]+'/'+p.slice(0,4):'—';
+ const cnt=k=>metas.filter(m=>stM(m)===k).length,ok=cnt('no_rumo')+cnt('concluida');
+ const aten=metas.filter(m=>['atencao','fora_do_rumo'].includes(stM(m)));
+ const atr=acoes.filter(a=>a.status!=='concluida'&&a.dataLimite&&a.dataLimite<hoje),conc=acoes.filter(a=>a.status==='concluida');
+ const regs=rit.flatMap(r=>(r.registros||[]).map(x=>Object.assign({r:r.nome},x))).sort((a,b)=>a.data<b.data?1:-1).slice(0,6);
+ const re=orc.realizado||[],pl=orc.mensal||[],ks=re.map((v,k)=>typeof v==='number'?k:-1).filter(k=>k>=0),R=ks.reduce((a,k)=>a+re[k],0),P=ks.reduce((a,k)=>a+(pl[k]||0),0);
+ const persp={};metas.forEach(m=>{const p=m.perspectiva||'Outras';persp[p]=persp[p]||[0,0];persp[p][1]++;if(['no_rumo','concluida'].includes(stM(m)))persp[p][0]++});
+ return `<div class="tool noprint" style="margin-top:18px"><button class="btn p sm" onclick="print()">Imprimir ou salvar em PDF</button></div>
+ <div class="bl rel" style="margin-top:12px"><h2>Relatório de acompanhamento · ${mesN(pAt)}</h2><p class="cap">${esc(o.nome)} · planejamento ${esc(D.ciclo||'')}${D.exemplo?' · dados de exemplo':''}</p>
+ <p><b>${ok} de ${metas.length}</b> metas estão no rumo ou concluídas. ${aten.length?`<b>${aten.length}</b> pedem atenção.`:'Nenhuma meta em alerta.'} No plano tático, <b>${conc.length} de ${acoes.length}</b> ações foram concluídas${atr.length?` e <b>${atr.length}</b> estão atrasadas`:''}.${ks.length?` O orçamento realizado soma ${brl(R)} contra ${brl(P)} planejados no período (${P?((R-P)/P*100>0?'+':'')+Math.round((R-P)/P*100)+'%':'—'}).`:''}</p>
+ <div class="sec"><h3>Metas por perspectiva</h3><table><tr><th>Perspectiva</th><th>No rumo</th></tr>${Object.entries(persp).map(([p,[a,b]])=>`<tr><td>${esc(p)}</td><td>${a} de ${b}</td></tr>`).join('')}</table></div>
+ <div class="sec"><h3>Metas que pedem atenção</h3>${aten.length?`<table><tr><th>Meta</th><th>Responsável</th><th>Situação</th><th>Último comentário</th></tr>${aten.map(m=>`<tr><td>${esc(m.indicador||m.titulo)}</td><td>${esc(m.responsavel||'')}</td><td>${stp(stM(m))}</td><td>${esc((ult(m)||{}).comentario||'')}</td></tr>`).join('')}</table>`:'<p class="cap">Nenhuma.</p>'}</div>
+ <div class="sec"><h3>Ações atrasadas</h3>${atr.length?`<table><tr><th>Ação</th><th>Responsável</th><th>Prazo</th></tr>${atr.map(a=>`<tr><td>${esc(a.acao)}</td><td>${esc(a.responsavel||'')}</td><td>${dbr(a.dataLimite)}</td></tr>`).join('')}</table>`:'<p class="cap">Nenhuma ação atrasada.</p>'}</div>
+ <div class="sec"><h3>Decisões dos rituais</h3>${regs.length?`<table><tr><th>Data</th><th>Ritual</th><th>Decisão</th></tr>${regs.map(x=>`<tr><td>${dbr(x.data)}</td><td>${esc(x.r)}</td><td>${esc(x.texto)}</td></tr>`).join('')}</table>`:'<p class="cap">Nenhum registro ainda.</p>'}</div>
+ </div>`}
 let CUR=null;
-const ABAS=[['','Painel'],['metas','Metas'],['acoes','Plano tático'],['rituais','Rituais'],['orcamento','Orçamento'],['fases','Fases']];
+const ABAS=[['','Painel'],['planejamento','Planejamento estratégico'],['fases','Passo a passo'],['metas','Metas e check-ins'],['acoes','Plano tático'],['rituais','Rituais'],['orcamento','Orçamento'],['relatorio','Relatório do mês'],['ben','Fale com o Ben']];
+const MENU=[['','Painel'],['Planejamento',[['planejamento','Planejamento estratégico','Ponto de partida, diagnóstico, prioridades e metas'],['fases','Passo a passo','As 5 fases e onde vocês estão']]],['Acompanhamento',[['metas','Metas e check-ins','Atualizar o mês de cada meta'],['acoes','Plano tático','Ações, responsáveis e prazos'],['rituais','Rituais','Registrar reuniões e decisões'],['orcamento','Orçamento','Planejado e realizado']]],['Ben',[['relatorio','Relatório do mês','Resumo pronto para o conselho'],['ben','Fale com o Ben','Tire dúvidas sobre o plano']]]];
+function menuHtml(id,aba){return `<nav class="menu" aria-label="Seções">${MENU.map(([k,l])=>{if(!Array.isArray(l))return `<a class="mi" href="#${id}"${aba===k?' aria-current="page"':''}>${l}</a>`;const on=l.some(x=>x[0]===aba);return `<details class="dd"><summary class="mi${on?' on':''}"><span class="lg">${k}</span><span class="sh">${({Planejamento:'Planejar',Acompanhamento:'Acompanhar'})[k]||k}</span> <span aria-hidden="true">▾</span></summary><div class="pop">${l.map(([kk,ll,dd])=>`<a href="#${id}-${kk}"${aba===kk?' aria-current="page"':''}><b>${ll}</b><small>${dd}</small></a>`).join('')}</div></details>`}).join('')}</nav>`}
+document.addEventListener('click',e=>{document.querySelectorAll('details.dd[open]').forEach(d=>{if(!d.contains(e.target)||e.target.closest('.pop a'))d.open=false})});
+document.addEventListener('toggle',e=>{if(!(e.target.matches&&e.target.matches('details.dd')&&e.target.open))return;document.querySelectorAll('details.dd[open]').forEach(d=>{if(d!==e.target)d.open=false});const pop=e.target.querySelector('.pop');if(innerWidth<=640)pop.style.top=(e.target.querySelector('summary').getBoundingClientRect().bottom+6)+'px';else pop.style.top=''},true);
+addEventListener('scroll',()=>{if(innerWidth<=640)document.querySelectorAll('details.dd[open]').forEach(d=>d.open=false)},{passive:true});
 const MESES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const STO=[['nao_iniciada','Não iniciada'],['no_rumo','No rumo'],['atencao','Atenção'],['fora_do_rumo','Fora do rumo'],['concluida','Concluída']];
 const optS=v=>STO.map(([k,l])=>`<option value="${k}"${k===v?' selected':''}>${l}</option>`).join('');
@@ -477,13 +562,17 @@ function espaco(id,aba){
  modo('app');CUR=id;const o=ORGS[id];quem.textContent=SESS&&REMOTO.includes(id)?SESS.user.email:o.nome;sair.hidden=false;sair.textContent=SESS?'Sair':'Trocar organização';document.title='RUMMO: '+o.nome;
  const D=lerImp(id);let corpo;
  if(aba==='fases')corpo=fasesHtml(id,o);
+ else if(aba==='planejamento')corpo=abaPlan(id);
+ else if(aba==='ben')corpo=abaBen(id);
+ else if(aba==='relatorio')corpo=D?abaRel(id,o,D):semDados(id);
  else if(!aba)corpo=painel(id,o);
  else if(!D)corpo=semDados(id);
  else corpo={metas:abaMetas,acoes:abaAcoes,rituais:abaRituais,orcamento:abaOrc}[aba](D);
  app.innerHTML=`<section class="band"><div class="in">
  <div class="cab">${marcaOrg(o,id)}<div><h1>${esc(o.nome)}</h1><p>${esc(o.desc)}</p></div></div>
- <nav class="tabs" aria-label="Seções">${ABAS.map(([k,l])=>`<a href="#${id}${k?'-'+k:''}"${(aba||'')===k?' aria-current="page"':''}>${l}</a>`).join('')}</nav>
+ ${menuHtml(id,aba||'')}
  ${corpo}</div></section>`;
+ if(aba==='planejamento')iniciarPlan(id);
 }
 const num=v=>{if(v===''||v==null)return null;const n=Number(String(v).replace(/\./g,'').replace(',','.'));return isNaN(n)?null:n};
 document.addEventListener('submit',e=>{
