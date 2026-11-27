@@ -223,11 +223,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offse
 .menu .mi:hover{color:var(--ink)}.menu .sh{display:none}
 .dd{position:relative}.dd .pop{position:absolute;top:calc(100% + 6px);left:0;min-width:290px;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:8px;box-shadow:0 18px 40px rgba(20,8,35,.22);display:grid;gap:2px}
 .dd .pop a{display:block;padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--ink)}.dd .pop a:hover,.dd .pop a[aria-current]{background:var(--trilho)}
-.dd .pop b{display:block;font-size:15px}.dd .pop small{display:block;color:var(--cinza);font-size:13px;margin-top:2px}
+.dd .pop b{display:block;font-size:15px}.dd .pop a.sub{padding:7px 12px 7px 24px}.dd .pop a.sub b{font-size:14px;font-weight:600}.dd .pop{max-height:calc(100vh - 120px);overflow-y:auto}.dd .pop small{display:block;color:var(--cinza);font-size:13px;margin-top:2px}
 @media (max-width:640px){.menu .lg{display:none}.menu .sh{display:inline}.menu{flex-wrap:nowrap;gap:0}.menu .mi{padding:8px 9px;font-size:14px;min-height:40px}.kpi.kd{flex-direction:column;align-items:flex-start}.dd .pop{position:fixed;left:12px;right:12px;top:auto;min-width:0}}
 .planbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:18px 0 12px}
 .planbar .st{font-size:13px;color:var(--cinza)}
-#planf{width:100%;height:calc(100vh - 150px);min-height:620px;border:1px solid var(--linha);border-radius:18px;background:#fff;display:block}
+#planf{width:100%;height:calc(100vh - 230px);min-height:480px;border:1px solid var(--linha);border-radius:18px;background:#fff;display:block}
 .rel h2{font-size:26px;margin:0 0 4px}.rel .sec{margin-top:22px}.rel table{width:100%;border-collapse:collapse;font-size:14px}.rel td,.rel th{padding:8px 6px;border-top:1px solid var(--linha);text-align:left;vertical-align:top}.rel th{color:var(--cinza);font-weight:700}
 @media print{header.top,.menu,.cab,.noprint,.planbar{display:none!important}body{background:#fff}.band{padding:0!important}.bl,.kpi{break-inside:avoid;border-color:#ddd}}
 </style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#381A56"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RUMMO"></head><body>
@@ -446,7 +446,11 @@ function fasesHtml(id,o){return `<div class="trilha" role="list" aria-label="Fas
  <div class="fases">${o.fases.map((f,k)=>`<article class="fase ${k===o.atual?'destaque':''}"><span class="n">Fase ${k+1}</span><h3>${esc(NOMES[k])}</h3><span class="pill ${f.st}">${esc(f.tag)}</span><p>${esc(f.t)}</p>${f.lista?`<ul>${f.lista.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${f.acts?`<div class="acts">${f.acts.map(([l,u,c])=>`<a class="btn ${c}" href="${u}"${u.startsWith('#')?'':' target="_blank" rel="noopener"'}>${esc(l)}${u.startsWith('#')?'':' ↗'}</a>`).join('')}</div>`:''}</article>`).join('')}</div>
  `}
 
-let PLAN=null;
+let PLAN=null,PLAN_GO=null;
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-step]');if(!a)return;const st=a.dataset.step,fr=document.getElementById('planf');
+ if(fr&&fr.contentWindow&&fr.contentWindow.go&&/-planejamento$/.test(location.hash)){e.preventDefault();try{fr.contentWindow.go(st)}catch(x){}a.closest('details').open=false}else{PLAN_GO=st}});
+function ajustarPlan(){const fr=document.getElementById('planf');if(!fr)return;fr.style.height=Math.max(480,innerHeight-fr.getBoundingClientRect().top-window.scrollY+window.scrollY-12)+'px'}
+addEventListener('resize',ajustarPlan);
 function abaPlan(id){return `<div class="planbar noprint"><div><b>Planejamento estratégico</b><div class="st" id="planst">Abrindo o planejamento...</div></div><div class="tool" style="margin:0"><button class="btn p sm" id="planlevar" disabled>Levar metas e ações para o painel</button></div></div><p id="planmsg" class="cap" role="status" style="margin:0 0 10px"></p><iframe id="planf" title="Planejamento estratégico"></iframe>`}
 async function iniciarPlan(id){
  const st=()=>document.getElementById('planst'),fr=document.getElementById('planf');
@@ -461,7 +465,9 @@ async function iniciarPlan(id){
   const rows=await SB.from('planejamento').select('chave,valor').eq('org_id',id);
   (rows.data||[]).forEach(r=>{try{localStorage.setItem(r.chave,r.valor);PLAN.ult[r.chave]=r.valor}catch(e){}});
   if(!fr)return;fr.srcdoc=html;
-  fr.onload=()=>{const b=document.getElementById('planlevar');if(b)b.disabled=false;if(st())st().textContent='Tudo o que vocês responderem fica salvo na RUMMO.'};
+  fr.onload=()=>{const b=document.getElementById('planlevar');if(b)b.disabled=false;if(st())st().textContent='Tudo o que vocês responderem fica salvo na RUMMO.';
+   try{const d=fr.contentDocument,css=d.createElement('style');css.textContent='.ai,.aitoggle,#aitog,#ai,.t-ia{display:none!important}';d.head.appendChild(css);if(PLAN_GO){fr.contentWindow.go(PLAN_GO);PLAN_GO=null}}catch(x){}
+   ajustarPlan();setTimeout(levarAuto,1500)};
   PLAN.timer=setInterval(()=>sincPlan(),4000);
  }catch(e){if(st())st().textContent='Não consegui abrir o planejamento. Recarregue a página e tente de novo.'}
 }
@@ -471,9 +477,13 @@ async function sincPlan(){
  if(!mud.length)return;const {error}=await SB.from('planejamento').upsert(mud);const s=document.getElementById('planst');
  if(error){if(s)s.textContent='Não consegui salvar agora. Vou tentar de novo.';return}
  mud.forEach(r=>PLAN.ult[r.chave]=r.valor);if(s)s.textContent='Salvo na RUMMO às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'.';
+ levarAuto();
 }
 addEventListener('pagehide',()=>{sincPlan()});
 addEventListener('hashchange',()=>{if(PLAN&&PLAN.timer&&!/-planejamento$/.test(location.hash)){sincPlan();clearInterval(PLAN.timer);PLAN.timer=null}});
+function levarAuto(){try{const fr=document.getElementById('planf');if(!fr||!PLAN)return;const P=fr.contentWindow.rummoPack();if(!P||!(P.metas||[]).length)return;
+ const sig=JSON.stringify([P.metas,P.acoes,P.rituais,P.prioridades,(P.orcamento||{}).mensal]);if(sig===PLAN.sig)return;PLAN.sig=sig;
+ const D=mesclar(lerImp(PLAN.id)||vazio(PLAN.id),P);salvar(D,PLAN.id);const s=document.getElementById('planst');if(s)s.textContent+=` Painel atualizado: ${D.metas.length} metas, ${D.acoes.length} ações.`}catch(x){}}
 function mesclar(D,P){
  const byId=a=>Object.fromEntries((a||[]).map(x=>[x.id,x]));
  if(D.exemplo){D={formato:'rummo.acompanhamento',versao:1,org:D.org,ciclo:P.ciclo||D.ciclo,metas:[],acoes:[],rituais:[],orcamento:{total:0,mensal:Array(12).fill(0),realizado:Array(12).fill(null)}}}
@@ -512,8 +522,8 @@ function abaRel(id,o,D){
  </div>`}
 let CUR=null;
 const ABAS=[['','Painel'],['planejamento','Planejamento estratégico'],['fases','Passo a passo'],['metas','Metas e check-ins'],['acoes','Plano tático'],['rituais','Rituais'],['orcamento','Orçamento'],['relatorio','Relatório do mês'],['ben','Fale com o Ben']];
-const MENU=[['','Painel'],['Planejamento',[['planejamento','Planejamento estratégico','Ponto de partida, diagnóstico, prioridades e metas'],['fases','Passo a passo','As 5 fases e onde vocês estão']]],['Acompanhamento',[['metas','Metas e check-ins','Atualizar o mês de cada meta'],['acoes','Plano tático','Ações, responsáveis e prazos'],['rituais','Rituais','Registrar reuniões e decisões'],['orcamento','Orçamento','Planejado e realizado']]],['Ben',[['relatorio','Relatório do mês','Resumo pronto para o conselho'],['ben','Fale com o Ben','Tire dúvidas sobre o plano']]]];
-function menuHtml(id,aba){return `<nav class="menu" aria-label="Seções">${MENU.map(([k,l])=>{if(!Array.isArray(l))return `<a class="mi" href="#${id}"${aba===k?' aria-current="page"':''}>${l}</a>`;const on=l.some(x=>x[0]===aba);return `<details class="dd"><summary class="mi${on?' on':''}"><span class="lg">${k}</span><span class="sh">${({Planejamento:'Planejar',Acompanhamento:'Acompanhar'})[k]||k}</span> <span aria-hidden="true">▾</span></summary><div class="pop">${l.map(([kk,ll,dd])=>`<a href="#${id}-${kk}"${aba===kk?' aria-current="page"':''}><b>${ll}</b><small>${dd}</small></a>`).join('')}</div></details>`}).join('')}</nav>`}
+const MENU=[['','Painel'],['Planejamento',[['planejamento','Planejamento estratégico','Visão geral da jornada'],['planejamento:config','Ponto de partida','Identidade e combinados'],['planejamento:diag','Diagnóstico 2026','O que aprendemos'],['planejamento:e1','Etapa 1','Papéis e governança'],['planejamento:e2','Etapa 2','Metas, indicadores e BSC'],['planejamento:e3','Etapa 3','Orçamento e equipe'],['planejamento:rev','Revisão','Decisões e pendências'],['planejamento:docs','Documentos','Relatório, caderno e resumo'],['fases','Passo a passo','As 5 fases da RUMMO']]],['Acompanhamento',[['metas','Metas e check-ins','Atualizar o mês de cada meta'],['acoes','Plano tático','Ações, responsáveis e prazos'],['rituais','Rituais','Registrar reuniões e decisões'],['orcamento','Orçamento','Planejado e realizado']]],['Ben',[['relatorio','Relatório do mês','Resumo pronto para o conselho'],['ben','Fale com o Ben','Tire dúvidas sobre o plano']]]];
+function menuHtml(id,aba){return `<nav class="menu" aria-label="Seções">${MENU.map(([k,l])=>{if(!Array.isArray(l))return `<a class="mi" href="#${id}"${aba===k?' aria-current="page"':''}>${l}</a>`;const on=l.some(x=>x[0].split(':')[0]===aba);return `<details class="dd"><summary class="mi${on?' on':''}"><span class="lg">${k}</span><span class="sh">${({Planejamento:'Planejar',Acompanhamento:'Acompanhar'})[k]||k}</span> <span aria-hidden="true">▾</span></summary><div class="pop">${l.map(([kk,ll,dd])=>{const [ab,st]=kk.split(':');return `<a href="#${id}-${ab}"${st?` data-step="${st}"`:''}${aba===kk?' aria-current="page"':''}${st?' class="sub"':''}><b>${ll}</b><small>${dd}</small></a>`}).join('')}</div></details>`}).join('')}</nav>`}
 document.addEventListener('click',e=>{document.querySelectorAll('details.dd[open]').forEach(d=>{if(!d.contains(e.target)||e.target.closest('.pop a'))d.open=false})});
 document.addEventListener('toggle',e=>{if(!(e.target.matches&&e.target.matches('details.dd')&&e.target.open))return;document.querySelectorAll('details.dd[open]').forEach(d=>{if(d!==e.target)d.open=false});const pop=e.target.querySelector('.pop');if(innerWidth<=640)pop.style.top=(e.target.querySelector('summary').getBoundingClientRect().bottom+6)+'px';else pop.style.top=''},true);
 addEventListener('scroll',()=>{if(innerWidth<=640)document.querySelectorAll('details.dd[open]').forEach(d=>d.open=false)},{passive:true});
@@ -572,7 +582,7 @@ function espaco(id,aba){
  <div class="cab">${marcaOrg(o,id)}<div><h1>${esc(o.nome)}</h1><p>${esc(o.desc)}</p></div></div>
  ${menuHtml(id,aba||'')}
  ${corpo}</div></section>`;
- if(aba==='planejamento')iniciarPlan(id);
+ if(aba==='planejamento'){app.querySelector('.cab').style.display='none';iniciarPlan(id)}
 }
 const num=v=>{if(v===''||v==null)return null;const n=Number(String(v).replace(/\./g,'').replace(',','.'));return isNaN(n)?null:n};
 document.addEventListener('submit',e=>{
