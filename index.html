@@ -227,7 +227,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offse
 @media (max-width:640px){.menu .lg{display:none}.menu .sh{display:inline}.menu{flex-wrap:nowrap;gap:0}.menu .mi{padding:8px 9px;font-size:14px;min-height:40px}.kpi.kd{flex-direction:column;align-items:flex-start}.dd .pop{position:fixed;left:12px;right:12px;top:auto;min-width:0}}
 .planbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:18px 0 12px}
 .planbar .st{font-size:13px;color:var(--cinza)}
-#planf{width:100%;height:calc(100vh - 230px);min-height:480px;border:1px solid var(--linha);border-radius:18px;background:#fff;display:block}
+.planfull{padding:0!important}.planfull .in{max-width:none}.planfull .menu{margin:0;padding:4px max(2vw,10px) 0;background:var(--card)}.planfull .planbar{margin:0;padding:6px max(2vw,10px);border-bottom:1px solid var(--linha);background:var(--card)}.planfull .planbar .btn{min-height:34px;padding:6px 14px}
+#planf{width:100%;height:calc(100vh - 160px);min-height:420px;border:0;border-radius:0;background:#fff;display:block}
 .rel h2{font-size:26px;margin:0 0 4px}.rel .sec{margin-top:22px}.rel table{width:100%;border-collapse:collapse;font-size:14px}.rel td,.rel th{padding:8px 6px;border-top:1px solid var(--linha);text-align:left;vertical-align:top}.rel th{color:var(--cinza);font-weight:700}
 @media print{header.top,.menu,.cab,.noprint,.planbar{display:none!important}body{background:#fff}.band{padding:0!important}.bl,.kpi{break-inside:avoid;border-color:#ddd}}
 </style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#381A56"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RUMMO"></head><body>
@@ -449,9 +450,10 @@ function fasesHtml(id,o){return `<div class="trilha" role="list" aria-label="Fas
 let PLAN=null,PLAN_GO=null;
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-step]');if(!a)return;const st=a.dataset.step,fr=document.getElementById('planf');
  if(fr&&fr.contentWindow&&fr.contentWindow.go&&/-planejamento$/.test(location.hash)){e.preventDefault();try{fr.contentWindow.go(st)}catch(x){}a.closest('details').open=false}else{PLAN_GO=st}});
-function ajustarPlan(){const fr=document.getElementById('planf');if(!fr)return;fr.style.height=Math.max(480,innerHeight-fr.getBoundingClientRect().top-window.scrollY+window.scrollY-12)+'px'}
+function ajustarPlan(){const fr=document.getElementById('planf');if(!fr)return;fr.style.height=Math.max(420,innerHeight-fr.getBoundingClientRect().top)+"px"}
 addEventListener('resize',ajustarPlan);
-function abaPlan(id){return `<div class="planbar noprint"><div><b>Planejamento estratégico</b><div class="st" id="planst">Abrindo o planejamento...</div></div><div class="tool" style="margin:0"><button class="btn p sm" id="planlevar" disabled>Levar metas e ações para o painel</button></div></div><p id="planmsg" class="cap" role="status" style="margin:0 0 10px"></p><iframe id="planf" title="Planejamento estratégico"></iframe>`}
+function abaPlan(id){return `<div class="planbar noprint"><div class="st" id="planst">Abrindo o planejamento...</div><span id="planmsg" class="st" role="status"></span><div class="tool" style="margin:0"><button class="btn s sm" id="planfs">Tela cheia</button><button class="btn p sm" id="planlevar" disabled>Levar metas e ações para o painel</button></div></div><iframe id="planf" title="Planejamento estratégico" allowfullscreen></iframe>`}
+document.addEventListener('click',e=>{if(e.target.id!=='planfs')return;const fr=document.getElementById('planf');if(fr&&fr.requestFullscreen)fr.requestFullscreen().catch(()=>{});else if(fr&&fr.webkitRequestFullscreen)fr.webkitRequestFullscreen()});
 async function iniciarPlan(id){
  const st=()=>document.getElementById('planst'),fr=document.getElementById('planf');
  if(PLAN&&PLAN.timer){clearInterval(PLAN.timer)}PLAN={id,ult:{}};
@@ -582,7 +584,7 @@ function espaco(id,aba){
  <div class="cab">${marcaOrg(o,id)}<div><h1>${esc(o.nome)}</h1><p>${esc(o.desc)}</p></div></div>
  ${menuHtml(id,aba||'')}
  ${corpo}</div></section>`;
- if(aba==='planejamento'){app.querySelector('.cab').style.display='none';iniciarPlan(id)}
+ if(aba==='planejamento'){app.querySelector('.cab').style.display='none';app.querySelector('section').classList.add('planfull');iniciarPlan(id)}
 }
 const num=v=>{if(v===''||v==null)return null;const n=Number(String(v).replace(/\./g,'').replace(',','.'));return isNaN(n)?null:n};
 document.addEventListener('submit',e=>{
