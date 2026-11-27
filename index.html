@@ -201,6 +201,20 @@ footer.rod .bx{max-width:1180px;margin:26px auto 0;border-top:1px solid rgba(255
 .aviso2{background:color-mix(in srgb,var(--coral) 12%,transparent);border-radius:14px;padding:12px 14px;font-size:14px;margin-top:12px}
 a:focus-visible,button:focus-visible{outline:3px solid var(--acct);outline-offset:2px}
 @media(max-width:760px){.entrar .in{grid-template-columns:minmax(0,1fr)}.trilha .tp span{font-size:11px}}
+
+:root{--dado:light-dark(#381A56,#D9F301);--fo:light-dark(#C0392B,#FF7A6B);--vazio:light-dark(#DCD2E8,#3B2B4E);--trilho:light-dark(#EDE6F5,#33224A)}
+.kpis .kpi b{color:var(--ink)}.kpi b small{font-size:.55em;color:var(--cinza);font-weight:700}.kpi .bar{margin-top:10px;height:8px;border-radius:6px;background:var(--trilho);overflow:hidden}.kpi .bar i{display:block;height:100%;border-radius:6px}.kpi em{font-style:normal;font-weight:700}
+.kpi.kd{display:flex;align-items:center;gap:14px}.kpi.kd .dn{width:74px;height:74px;flex:none}.kpi.kd .dn-n{font-size:30px}
+.dn{width:150px;height:150px;flex:none}.dn-n{font:800 28px Montserrat,sans-serif;fill:var(--ink)}.dn-s{font:600 13px Montserrat,sans-serif;fill:var(--cinza)}
+.dw{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.dw .leg{flex-direction:column;gap:8px;margin:0;font-size:14px}.leg b{color:var(--ink)}
+.graf .bl h3{font-size:19px;font-weight:800;color:var(--ink)}.graf .cap{margin:4px 0 14px}
+.hd{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.ev{width:100%;height:auto;display:block}.ev .gl{stroke:var(--linha)}.ev .ax{font:600 12px Montserrat,sans-serif;fill:var(--cinza)}.ev .evb{fill:var(--trilho)}.ev .evl{fill:none;stroke:var(--dado);stroke-width:3;stroke-linejoin:round}.ev .evp{fill:var(--dado);stroke:var(--card);stroke-width:2}.ev .evt{font:800 13px Montserrat,sans-serif;fill:var(--ink)}
+.vz{color:var(--cinza);font-size:14px;margin:6px 0 0}.vz a{color:var(--acct);font-weight:700}
+.aviso-ex{margin-top:22px;background:var(--trilho);border-color:transparent;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}.chip{display:flex;gap:12px;align-items:flex-start;background:var(--trilho);border-radius:14px;padding:14px}.chip b{display:block;font-size:15px}.chip small{color:var(--cinza);font-size:13px}.nn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--dado);color:light-dark(#fff,#21132F);display:grid;place-items:center;font-weight:800}
+.graf .ac b{font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark}:root:not([data-theme=light]) .pill{color:#D9F301}:root:not([data-theme=light]) .btn.s{color:#D9F301}:root:not([data-theme=light]) .plano .pr{color:#D9F301}:root:not([data-theme=light]) .card summary{color:#D9F301}}
 </style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#381A56"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RUMMO"></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pal" viewBox="0 0 316 100"><g transform="scale(.916)"><g transform="translate(4 92) skewX(-12)" font-family="Anton,Impact,sans-serif" font-size="100"><text fill="currentColor" letter-spacing="1">RUMMO</text></g><circle cx="322" cy="84" r="10" fill="var(--dot,#D9F301)"/></g></symbol></defs></svg>
 <header class="top"><a href="#" aria-label="RUMMO, início"><svg viewBox="0 0 316 100" role="img" aria-label="RUMMO."><use href="#pal" style="color:#fff"/></svg></a><nav id="sitenav" aria-label="Site"><a href="#plataforma">Plataforma</a><a href="#funcionalidades">Funcionalidades</a><a href="#fases-site">Como funciona</a><a href="#planos">Planos</a><a href="#rede">Para financiadores</a></nav><span class="sp"></span><span id="quem" style="font-size:14px;opacity:.85"></span><button id="sair" hidden>Trocar organização</button><a class="cta" id="btnentrar" href="#entrar" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)">Entrar</a></header>
@@ -306,7 +320,7 @@ const PAINEL={
   reuniao:'Reunião de resultados: quarta, 3 de dezembro, 9h',
   ben:['Novembro foi bom na formação: 70% dos jovens previstos já concluíram os cursos e o voluntariado está perto da meta.','O ponto de atenção é a receita própria, em 30% do ano. Sugiro levar à reunião de resultados duas ações de captação para dezembro e rever a meta com o conselho.']}};
 const SN={ok:['s-ok','No rumo'],at:['s-at','Atenção'],fo:['s-fo','Fora do rumo']};
-const COR={ok:'var(--azul)',at:'#E39B2D',fo:'#C0392B'};
+const COR={ok:'var(--dado)',at:'#E39B2D',fo:'var(--fo)'};
 function faixa(o){return `<div class="faixa" aria-hidden="true">${o.fases.map((f,k)=>`<span class="${k===o.atual?'agora':f.st==='ok'?'on':''}"></span>`).join('')}</div>`}
 const KIMP=id=>'rummo_acomp_'+id;
 const SB=window.supabase?window.supabase.createClient('https://butugpfnjxftixiisvgu.supabase.co','sb_publishable_PqSLNMVAgP1SNEoKJ6MViw_9m6Kgzj6'):null;
@@ -332,45 +346,60 @@ const STI={no_rumo:['s-ok','No rumo'],atencao:['s-at','Atenção'],fora_do_rumo:
 const stp=st=>{const x=STI[st]||['',String(st||'Sem status')];return `<span class="sem ${x[0]}" style="${x[0]?'':'color:var(--cinza)'}">${esc(x[1])}</span>`};
 const brl=n=>typeof n==='number'?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}):'';
 const dbr=iso=>{if(!iso)return '';const [y,m,d]=String(iso).slice(0,10).split('-');return d&&m?`${d}/${m}/${y}`:esc(iso)};
+function donut(segs,cen,sub){const tot=segs.reduce((a,x)=>a+x[0],0)||1,R=52,C=2*Math.PI*R;let off=0;
+ return `<svg class="dn" viewBox="0 0 140 140" role="img" aria-label="${esc(cen)} ${esc(sub||'')}"><circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--trilho)" stroke-width="18"/>${segs.filter(x=>x[0]>0).map(([v,c])=>{const L=v/tot*C,el=`<circle cx="70" cy="70" r="${R}" fill="none" stroke="${c}" stroke-width="18" stroke-dasharray="${L} ${C-L}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`;off+=L;return el}).join('')}<text x="70" y="70" text-anchor="middle" class="dn-n">${esc(cen)}</text>${sub?`<text x="70" y="90" text-anchor="middle" class="dn-s">${esc(sub)}</text>`:''}</svg>`}
 function painelImp(id,o,D){
  const hoje=new Date().toISOString().slice(0,10);
  const metas=Array.isArray(D.metas)?D.metas:[],acoes=Array.isArray(D.acoes)?D.acoes:[],rit=Array.isArray(D.rituais)?D.rituais:[],pri=Array.isArray(D.prioridades)?D.prioridades:[];
  const ult=m=>Array.isArray(m.checkins)&&m.checkins.length?m.checkins[m.checkins.length-1]:null;
- const stM=m=>(ult(m)&&ult(m).status)||m.status;
- const noRumo=metas.filter(m=>['no_rumo','concluida'].includes(stM(m))).length;
- const abertas=acoes.filter(a=>a.status!=='concluida'),atras=abertas.filter(a=>a.dataLimite&&a.dataLimite<hoje);
+ const stM=m=>(ult(m)&&ult(m).status)||m.status||'nao_iniciada';
+ const okS=s=>s==='no_rumo'||s==='concluida';
+ const noRumo=metas.filter(m=>okS(stM(m))).length;
+ const abertas=acoes.filter(a=>a.status!=='concluida'),atras=abertas.filter(a=>a.dataLimite&&a.dataLimite<hoje),feitas=acoes.length-abertas.length;
  const prox=rit.filter(r=>r.proximaData).sort((a,b)=>a.proximaData<b.proximaData?-1:1)[0];
  const persp={};metas.forEach(m=>{(persp[m.perspectiva||'Outras']=persp[m.perspectiva||'Outras']||[]).push(m)});
- const pc=m=>{const c=ult(m);if(c&&typeof c.valor==='number'&&typeof m.metaNum==='number'&&m.metaNum!==0){const b=typeof m.baseNum==='number'?m.baseNum:0;return Math.max(0,Math.min(100,Math.round((c.valor-b)/(m.metaNum-b)*100)))}return null};
- const orc=D.orcamento||{};
- const SC={nao_iniciada:'#CFC3DD',no_rumo:COR.ok,atencao:COR.at,fora_do_rumo:COR.fo,concluida:'#7FA800'};
- const cnt={};metas.forEach(m=>{const s=stM(m)||'nao_iniciada';cnt[s]=(cnt[s]||0)+1});
- const stk=(c,tot)=>`<div class="stk">${STO.filter(([k])=>c[k]).map(([k])=>`<i style="width:${c[k]/tot*100}%;background:${SC[k]}"></i>`).join('')}</div><div class="leg">${STO.filter(([k])=>c[k]).map(([k,l])=>`<span><i style="background:${SC[k]}"></i>${l}: ${c[k]}</span>`).join('')}</div>`;
+ const orc=D.orcamento||{},ciclo=D.ciclo||2027;
+ const SC={nao_iniciada:'var(--vazio)',no_rumo:'var(--dado)',atencao:'#E39B2D',fora_do_rumo:'var(--fo)',concluida:'#7FA800'};
+ const cnt={};metas.forEach(m=>{const s=stM(m);cnt[s]=(cnt[s]||0)+1});
  const ca={};acoes.forEach(a=>{const s=a.status||'nao_iniciada';ca[s]=(ca[s]||0)+1});
+ const leg=c=>`<div class="leg">${STO.filter(([k])=>c[k]).map(([k,l])=>`<span><i style="background:${SC[k]}"></i>${l} <b>${c[k]}</b></span>`).join('')}</div>`;
  const per=[...new Set(metas.flatMap(m=>(m.checkins||[]).map(c=>c.periodo)))].sort();
- const pAt=per[per.length-1]||`${D.ciclo||2027}-01`,comCk=metas.filter(m=>(m.checkins||[]).some(c=>c.periodo===pAt)).length;
+ const pAt=per[per.length-1]||`${ciclo}-01`,comCk=metas.filter(m=>(m.checkins||[]).some(c=>c.periodo===pAt)).length;
  const mesN=p=>MESES[+p.slice(5,7)-1]+'/'+p.slice(0,4);
+ const pctRumo=metas.length?Math.round(noRumo/metas.length*100):0;
+ // evolucao
+ const ev=MESES.map((_,k)=>{const p=`${ciclo}-${String(k+1).padStart(2,'0')}`;const cs=metas.map(m=>(m.checkins||[]).find(c=>c.periodo===p)).filter(Boolean);return {n:cs.length,ok:cs.filter(c=>okS(c.status)).length,at:cs.filter(c=>c.status==='atencao').length,fo:cs.filter(c=>c.status==='fora_do_rumo').length}});
+ const W=1000,H=230,X=k=>50+k*(W-80)/11,Y=v=>H-30-v*(H-64)/100;
+ const pts=ev.map((e,k)=>e.n?[X(k),Y(e.ok/e.n*100),Math.round(e.ok/e.n*100)]:null);
+ const linha=pts.filter(Boolean);
+ const evol=`<svg class="ev" viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolução mensal do percentual de metas no rumo">${[0,50,100].map(v=>`<line x1="40" x2="${W-20}" y1="${Y(v)}" y2="${Y(v)}" class="gl"/><text x="32" y="${Y(v)+4}" text-anchor="end" class="ax">${v}%</text>`).join('')}
+ ${ev.map((e,k)=>e.n?`<rect x="${X(k)-9}" y="${Y(e.n/Math.max(1,metas.length)*100)}" width="18" height="${Y(0)-Y(e.n/Math.max(1,metas.length)*100)}" rx="3" class="evb"><title>${MESES[k]}: ${e.n} check-ins</title></rect>`:'').join('')}
+ ${linha.length>1?`<polyline points="${linha.map(p=>p[0]+','+p[1]).join(' ')}" class="evl"/>`:''}${linha.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" class="evp"/><text x="${p[0]}" y="${p[1]-11}" text-anchor="middle" class="evt">${p[2]}%</text>`).join('')}
+ ${MESES.map((m,k)=>`<text x="${X(k)}" y="${H-8}" text-anchor="middle" class="ax">${m}</text>`).join('')}</svg>`;
  const pl=Array.isArray(orc.mensal)?orc.mensal:[],re=Array.isArray(orc.realizado)?orc.realizado:[];
  const mx=Math.max(1,...pl.map(v=>v||0),...re.map(v=>v||0)),temOrc=pl.some(v=>v>0)||re.some(v=>typeof v==='number');
- const graf=`<div class="graf">
- <div class="bl"><h3>Status das metas</h3><p class="cap" style="margin:4px 0 0">${metas.length} metas${per.length?'':'. Tudo começa como "não iniciada" até o primeiro check-in'}</p>${metas.length?stk(cnt,metas.length):''}</div>
- <div class="bl"><h3>Check-ins de ${mesN(pAt)}</h3><p class="cap" style="margin:4px 0 0">Metas atualizadas no mês</p><span class="big">${comCk} de ${metas.length}</span><div class="bar" style="margin-top:12px"><i style="width:${metas.length?comCk/metas.length*100:0}%;background:var(--azul)"></i></div></div>
- <div class="bl"><h3>Metas por perspectiva</h3><p class="cap" style="margin:4px 0 0">No rumo ou concluídas, do total</p>${Object.entries(persp).map(([pp,ms])=>{const ok=ms.filter(m=>['no_rumo','concluida'].includes(stM(m))).length;return `<div class="hb"><b>${esc(pp)}</b><span>${ok}/${ms.length}</span><div class="bar"><i style="width:${ok/ms.length*100}%;background:var(--azul)"></i></div></div>`}).join('')}</div>
- <div class="bl"><h3>Plano tático</h3><p class="cap" style="margin:4px 0 0">${acoes.length} ações · ${atras.length} atrasada${atras.length===1?'':'s'}</p>${acoes.length?stk(ca,acoes.length):''}</div>
- <div class="bl span2"><h3>Orçamento ${esc(D.ciclo||'')}: planejado e realizado</h3>${temOrc?`<div class="cols">${MESES.map((_,k)=>`<div><span style="height:${(pl[k]||0)/mx*100}%;background:var(--azul-c);border:1px solid var(--linha)" title="Planejado ${brl(pl[k]||0)}"></span><span style="height:${(re[k]||0)/mx*100}%;background:var(--azul)" title="Realizado ${brl(re[k]||0)}"></span></div>`).join('')}</div><div class="mes">${MESES.map(m=>`<span>${m}</span>`).join('')}</div><div class="leg"><span><i style="background:var(--azul-c);border:1px solid var(--linha)"></i>Planejado</span><span><i style="background:var(--azul)"></i>Realizado</span></div>`:`<p class="cap" style="margin:8px 0 0">Lance o planejado de cada mês na aba <a href="#${id}-orcamento" style="color:inherit;font-weight:700">Orçamento</a> e o gráfico aparece aqui.</p>`}</div>
- </div>`;
- const avisoEx=D.exemplo?`<div class="bl" style="margin-top:22px;background:var(--azul-c);border-color:transparent;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><h3 style="margin:0">Você está vendo um exemplo preenchido</h3><p class="cap" style="margin:4px 0 0">Metas, ações e rituais são do planejamento 2027. Os check-ins de janeiro a março e o orçamento são fictícios, só para mostrar o fluxo.</p></div><button class="btn p sm" data-act="zerar">Zerar e começar de verdade</button></div>`:'';
- return `${avisoEx}<div class="kpis"><div class="kpi"><b>${noRumo} de ${metas.length}</b><span>metas no rumo</span></div><div class="kpi"><b>${abertas.length}</b><span>ações abertas</span></div><div class="kpi"><b>${atras.length}</b><span>${atras.length===1?'ação atrasada':'ações atrasadas'}</span></div><div class="kpi"><b>${prox?dbr(prox.proximaData).slice(0,5):'—'}</b><span>${prox?esc(prox.nome):'próximo ritual'}</span></div></div>
- ${graf}
- <div class="dash">
- ${pri.length?`<div class="bl span2"><h3>Prioridades ${esc(D.ciclo||'')}</h3><p class="cap">O que a organização decidiu fazer primeiro</p>${pri.map(x=>`<div class="ac"><div><b>${esc(x.curto||x.titulo)}</b><small>${esc(x.titulo)} · ${esc(x.perspectiva||'')}</small></div></div>`).join('')}</div>`:''}
- <div class="bl"><h3>Metas do ano</h3><p class="cap">${metas.length} metas por perspectiva. O percentual aparece após o primeiro check-in.</p>${Object.entries(persp).map(([pp,ms])=>`<p class="cap" style="margin:16px 0 0;font-weight:700;color:var(--ink)">${esc(pp)}</p>${ms.map(m=>{const v=pc(m);return `<div class="mt"><b>${esc(m.indicador||m.titulo)}</b><span class="v">${v===null?'':v+'%'}</span>${v===null?'':`<div class="bar"><i style="width:${v}%;background:${({atencao:COR.at,fora_do_rumo:COR.fo})[stM(m)]||COR.ok}"></i></div>`}<small>${[m.meta,m.responsavel].filter(Boolean).map(esc).join(' · ')}${m.meta||m.responsavel?' · ':''}${stp(stM(m))}${ult(m)?`<br>Último check-in (${esc(ult(m).periodo||'')}): ${esc(ult(m).valor??'')}${ult(m).comentario?' · '+esc(ult(m).comentario):''}`:''}</small></div>`}).join('')}`).join('')}</div>
- <div style="display:grid;gap:16px;align-content:start">
- <div class="bl"><h3>Plano tático</h3><p class="cap">Ações por prazo</p>${acoes.slice().sort((a,b)=>(a.dataLimite||'9')<(b.dataLimite||'9')?-1:1).map(a=>{const at=a.status!=='concluida'&&a.dataLimite&&a.dataLimite<hoje;return `<div class="ac"><div>${esc(a.acao)}<small>${a.responsavel?esc(a.responsavel)+' · ':''}${stp(a.status)}</small></div><span class="d ${at?'s-fo':''}">${at?'Atrasada · ':''}${dbr(a.dataLimite)}</span></div>`}).join('')}</div>
- <div class="bl"><h3>Rituais</h3><p class="cap">Rotinas de acompanhamento</p>${rit.map(r=>`<div class="ac"><div>${esc(r.nome)}<small>${esc(r.quando||'')}${r.duracao?' · '+esc(r.duracao):''}</small></div><span class="d">${dbr(r.proximaData)}</span></div>`).join('')}</div>
- ${orc.total?`<div class="bl"><h3>Orçamento ${esc(D.ciclo||'')}</h3><p class="cap">Total planejado</p><div class="kpi" style="border:0;padding:0"><b>${brl(orc.total)}</b>${orc.receitaPrevista&&orc.receitaPrevista.base?`<span>Receita prevista (cenário base): ${brl(orc.receitaPrevista.base)}</span>`:''}</div>${(()=>{const r=Array.isArray(orc.realizado)?orc.realizado:[],pl=Array.isArray(orc.mensal)?orc.mensal:[];const ks=r.map((v,k)=>typeof v==='number'?k:-1).filter(k=>k>=0);if(!ks.length)return '';const R=ks.reduce((a,k)=>a+r[k],0),P=ks.reduce((a,k)=>a+(pl[k]||0),0),dv=P?Math.round((R-P)/P*100):0;return `<div class="ac" style="margin-top:12px"><div>Realizado em ${ks.length} ${ks.length===1?'mês':'meses'}<small>Planejado no período: ${brl(P)}</small></div><span class="d ${Math.abs(dv)>10?'s-fo':'s-ok'}">${brl(R)} (${dv>0?'+':''}${dv}%)</span></div>`})()}</div>`:''}
+ const ks=re.map((v,k)=>typeof v==='number'?k:-1).filter(k=>k>=0),R=ks.reduce((a,k)=>a+re[k],0),P=ks.reduce((a,k)=>a+(pl[k]||0),0),dv=P?Math.round((R-P)/P*100):0;
+ const aten=metas.filter(m=>['atencao','fora_do_rumo'].includes(stM(m)));
+ const proxA=abertas.slice().sort((a,b)=>(a.dataLimite||'9')<(b.dataLimite||'9')?-1:1).slice(0,4);
+ const avisoEx=D.exemplo?`<div class="bl aviso-ex"><div><h3 style="margin:0">Você está vendo um exemplo preenchido</h3><p class="cap" style="margin:4px 0 0">Metas, ações e rituais são do planejamento ${esc(ciclo)}. Os check-ins de janeiro a março e o orçamento são fictícios.</p></div><button class="btn p sm" data-act="zerar">Zerar e começar de verdade</button></div>`:'';
+ return `${avisoEx}
+ <div class="kpis">
+  <div class="kpi kd">${donut([[noRumo,'var(--dado)'],[metas.length-noRumo,'var(--vazio)']],pctRumo+'%')}<div><b>${noRumo} de ${metas.length}</b><span>metas no rumo</span></div></div>
+  <div class="kpi"><b>${comCk}<small>/${metas.length}</small></b><span>check-ins de ${mesN(pAt)}</span><div class="bar"><i style="width:${metas.length?comCk/metas.length*100:0}%;background:var(--dado)"></i></div></div>
+  <div class="kpi"><b>${feitas}<small>/${acoes.length}</small></b><span>ações concluídas${atras.length?` · <em class="s-fo">${atras.length} atrasada${atras.length>1?'s':''}</em>`:''}</span><div class="bar"><i style="width:${acoes.length?feitas/acoes.length*100:0}%;background:#7FA800"></i></div></div>
+  <div class="kpi"><b>${prox?dbr(prox.proximaData).slice(0,5):'—'}</b><span>${prox?'próximo: '+esc(prox.nome):'próximo ritual'}</span></div>
  </div>
- <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:6px 0 10px"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar realizado</a></div><p class="cap" style="margin:0">Gerado em ${dbr(D.geradoEm)} · ${esc(D.origem||'')}. Os check-ins ficam salvos neste navegador.</p></div>
+ <div class="graf">
+  <div class="bl span2"><div class="hd"><div><h3>Evolução das metas</h3><p class="cap">% de metas no rumo a cada mês e quantas tiveram check-in</p></div><div class="leg" style="margin:0"><span><i style="background:var(--dado)"></i>% no rumo</span><span><i style="background:var(--trilho)"></i>check-ins no mês</span></div></div>${per.length?evol:`<p class="vz">A linha aparece depois do primeiro check-in. <a href="#${id}-metas">Fazer check-in</a></p>`}</div>
+  <div class="bl"><h3>Status das metas</h3><p class="cap">${metas.length} metas no ano</p><div class="dw">${donut(STO.map(([k])=>[cnt[k]||0,SC[k]]),String(metas.length),'metas')}${leg(cnt)}</div></div>
+  <div class="bl"><h3>Plano tático</h3><p class="cap">${acoes.length} ações · ${atras.length} atrasada${atras.length===1?'':'s'}</p><div class="dw">${donut(STO.map(([k])=>[ca[k]||0,SC[k]]),String(acoes.length),'ações')}${leg(ca)}</div></div>
+  <div class="bl"><h3>Metas por perspectiva</h3><p class="cap">No rumo ou concluídas, do total</p>${Object.entries(persp).map(([pp,ms])=>{const ok=ms.filter(m=>okS(stM(m))).length;return `<div class="hb"><b>${esc(pp)}</b><span>${ok}/${ms.length}</span><div class="bar"><i style="width:${ok/ms.length*100}%;background:var(--dado)"></i></div></div>`}).join('')}</div>
+  <div class="bl"><h3>Pedem atenção</h3><p class="cap">${aten.length?aten.length+' meta'+(aten.length>1?'s':'')+' em atenção ou fora do rumo':'Nenhuma meta em alerta'}</p>${aten.slice(0,6).map(m=>`<div class="ac"><div><b>${esc(m.indicador||m.titulo)}</b><small>${esc(m.responsavel||'Sem responsável')}${ult(m)&&ult(m).comentario?' · '+esc(ult(m).comentario):''}</small></div>${stp(stM(m))}</div>`).join('')||`<p class="vz">Tudo no rumo por aqui.</p>`}</div>
+  <div class="bl span2"><div class="hd"><div><h3>Orçamento ${esc(ciclo)}</h3><p class="cap">Planejado e realizado por mês${ks.length?` · realizado ${brl(R)} de ${brl(P)} planejados no período (<span class="${Math.abs(dv)>10?'s-fo':'s-ok'}">${dv>0?'+':''}${dv}%</span>)`:''}</p></div><div class="leg" style="margin:0"><span><i style="background:var(--trilho)"></i>Planejado</span><span><i style="background:var(--dado)"></i>Realizado</span></div></div>${temOrc?`<div class="cols">${MESES.map((_,k)=>`<div><span style="height:${(pl[k]||0)/mx*100}%;background:var(--trilho)" title="Planejado ${brl(pl[k]||0)}"></span><span style="height:${(re[k]||0)/mx*100}%;background:var(--dado)" title="Realizado ${brl(re[k]||0)}"></span></div>`).join('')}</div><div class="mes">${MESES.map(m=>`<span>${m}</span>`).join('')}</div>`:`<p class="vz">Lance o planejado de cada mês na aba <a href="#${id}-orcamento">Orçamento</a> e o gráfico aparece aqui.</p>`}</div>
+  <div class="bl"><h3>Próximas ações</h3><p class="cap">Por prazo</p>${proxA.map(a=>{const at=a.dataLimite&&a.dataLimite<hoje;return `<div class="ac"><div>${esc(a.acao)}<small>${esc(a.responsavel||'')}</small></div><span class="d ${at?'s-fo':''}">${at?'Atrasada · ':''}${dbr(a.dataLimite)}</span></div>`}).join('')||'<p class="vz">Nenhuma ação aberta.</p>'}</div>
+  <div class="bl"><h3>Rituais</h3><p class="cap">Próximos encontros</p>${rit.slice().sort((a,b)=>(a.proximaData||'9')<(b.proximaData||'9')?-1:1).slice(0,4).map(r=>`<div class="ac"><div>${esc(r.nome)}<small>${esc(r.quando||'')}</small></div><span class="d">${dbr(r.proximaData)}</span></div>`).join('')}</div>
+  ${pri.length?`<div class="bl span2"><h3>Prioridades ${esc(ciclo)}</h3><div class="chips">${pri.map((x,k)=>`<div class="chip"><span class="nn">${k+1}</span><div><b>${esc(x.curto||x.titulo)}</b><small>${esc(x.perspectiva||'')}</small></div></div>`).join('')}</div></div>`:''}
+  <div class="bl span2"><h3>Atualizar o acompanhamento</h3><div class="tool" style="margin:10px 0 0"><a class="btn p sm" href="#${id}-metas">Fazer check-in das metas</a><a class="btn s sm" href="#${id}-acoes">Atualizar ações</a><a class="btn s sm" href="#${id}-rituais">Registrar ritual</a><a class="btn s sm" href="#${id}-orcamento">Lançar orçamento</a></div></div>
  </div>`;
 }
 document.addEventListener('change',e=>{if(e.target.id!=='fimp')return;const f=e.target.files[0];if(!f)return;const id=CUR||'pensando-bem';f.text().then(t=>{const D=JSON.parse(t);if(D.formato!=='rummo.acompanhamento')throw new Error('formato');salvar(D,id);rota()}).catch(()=>{const el=document.getElementById('imperr');if(el)el.textContent='Esse arquivo não é um acompanhamento da RUMMO. Use o botão "Enviar para a RUMMO" do planejamento.'})});
