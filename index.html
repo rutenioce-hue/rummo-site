@@ -286,7 +286,7 @@ function login(msg){
   if(error){b.disabled=false;b.textContent='Entrar';er.textContent=/confirm/i.test(error.message)?'Confirme seu e-mail pelo link que enviamos.':'E-mail ou senha incorretos.';return}
   await carregar();irParaOrg()};
  document.getElementById('esq').onclick=async()=>{const em=document.getElementById('em').value.trim();if(!em){er.textContent='Digite seu e-mail acima e clique de novo em "Esqueci a senha".';return}
-  const {error}=await SB.auth.resetPasswordForEmail(em,{redirectTo:location.origin+'/'});er.textContent=error?'Não consegui enviar agora. Tente de novo em alguns minutos.':'Se esse e-mail tiver acesso, enviamos um link para criar uma nova senha.'};
+  const {error}=await SB.auth.resetPasswordForEmail(em,{redirectTo:'https://rummo.org/'});er.textContent=error?'Não consegui enviar agora. Tente de novo em alguns minutos.':'Se esse e-mail tiver acesso, enviamos um link para criar uma nova senha.'};
 }
 function novaSenha(){
  modo('login');document.title='RUMMO: criar senha';
